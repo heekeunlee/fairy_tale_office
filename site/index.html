@@ -228,6 +228,7 @@
   .book-entry .book-text { display: flex; flex-direction: column; gap: .25rem; }
   .book-entry .book-title { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.05rem; }
   .book-entry .book-meta { font-family: "IBM Plex Mono", monospace; font-size: .7rem; color: var(--muted-paper); letter-spacing: .03em; }
+  .book-entry .book-hook { font-family: "Gowun Batang", serif; font-style: italic; font-size: .82rem; color: var(--brass-bright); }
   .book-entry .book-tag {
     font-family: "IBM Plex Mono", monospace; font-size: .64rem; letter-spacing: .04em;
     color: var(--brass-bright); background: rgba(200,154,76,.16); padding: .1rem .5rem;
@@ -330,52 +331,59 @@
           <p class="niche-stat"><span class="num">11</span>컷 · 삽화 완료</p>
         </div>
       </article>
-    </div>
-  </section>
 
-  <section>
-    <div class="section-head">
-      <p class="eyebrow mono">NEXT TO MOVE IN</p>
-      <h2>다음에 합류할 이웃들</h2>
-    </div>
-    <div class="cabinet future">
-      <article class="niche is-future">
-        <div class="glyph">
+      <article class="crew-card">
+        <div class="portrait illustrated-portrait">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 40 L20 29"/>
             <path d="M18.5 27.5 L34.5 11 L38 14.5 L22 31 Z"/>
             <circle cx="36" cy="13" r="1.8" fill="currentColor" stroke="none"/>
           </svg>
+          <span class="portrait-note">사진 준비 중</span>
         </div>
-        <h3 class="niche-name">트렌드 리서처</h3>
-        <p class="niche-duty">국내외 인기 소재와 독자 취향을 살핍니다.</p>
-        <span class="badge">준비 중</span>
+        <div class="crew-body">
+          <p class="crew-persona">남도윤<span class="en">Dylan Nam</span></p>
+          <p class="crew-role">리서치 담당 · 자료실</p>
+          <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
+          <p class="niche-duty">국내외 인기 소재와 독자 취향을 살핍니다.</p>
+          <p class="niche-stat"><span class="num">1</span>건 · 트렌드 리포트</p>
+        </div>
       </article>
 
-      <article class="niche is-future">
-        <div class="glyph">
+      <article class="crew-card">
+        <div class="portrait illustrated-portrait">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14 6 L14 42"/>
             <path d="M14 8.5 L36 15 L14 23 Z"/>
           </svg>
+          <span class="portrait-note">사진 준비 중</span>
         </div>
-        <h3 class="niche-name">마케터</h3>
-        <p class="niche-duty">완성작을 알릴 카피와 채널을 만듭니다.</p>
-        <span class="badge">준비 중</span>
+        <div class="crew-body">
+          <p class="crew-persona">백하늘<span class="en">Skye Baek</span></p>
+          <p class="crew-role">마케팅 담당 · 홍보실</p>
+          <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
+          <p class="niche-duty">완성작을 알릴 카피와 채널을 만듭니다.</p>
+          <p class="niche-stat"><span class="num">7</span>건 · 홍보 카피 완료</p>
+        </div>
       </article>
 
-      <article class="niche is-future">
-        <div class="glyph">
+      <article class="crew-card">
+        <div class="portrait illustrated-portrait">
           <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="14" cy="14" r="6"/>
             <path d="M18.5 18.5 L38 38"/>
             <path d="M30.5 30.5 L35 26"/>
             <path d="M34.5 34.5 L39 30"/>
           </svg>
+          <span class="portrait-note">사진 준비 중</span>
         </div>
-        <h3 class="niche-name">총무</h3>
-        <p class="niche-duty">공방 전체의 진행 상황을 정리합니다.</p>
-        <span class="badge">준비 중</span>
+        <div class="crew-body">
+          <p class="crew-persona">조단비<span class="en">Danbi Cho</span></p>
+          <p class="crew-role">총무 담당 · 사무실</p>
+          <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
+          <p class="niche-duty">공방 전체의 진행 상황을 정리합니다.</p>
+          <p class="niche-stat"><span class="num">1</span>건 · 점검 완료</p>
+        </div>
       </article>
     </div>
   </section>
@@ -416,6 +424,7 @@
       <a class="book-entry" href="stories/반딧불이-콩콩이.html">
         <span class="book-text">
           <span class="book-title">반딧불이 콩콩이, 처음 불을 켜다<span class="book-tag">그림책 · 4~7세</span></span>
+          <span class="book-hook">"무서워도, 켜졌다."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 삽화 정다은 · 완결</span>
         </span>
         <span class="arrow">→</span>
@@ -423,6 +432,7 @@
       <a class="book-entry" href="stories/우리만-아는-레시피.html">
         <span class="book-text">
           <span class="book-title">우리만 아는 레시피<span class="book-tag">단편 · 초등 5~6학년</span></span>
+          <span class="book-hook">"손끝은, 잊지 않는다."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
@@ -430,6 +440,7 @@
       <a class="book-entry" href="stories/욕심쟁이-다람쥐-봄이.html">
         <span class="book-text">
           <span class="book-title">욕심쟁이 다람쥐 봄이<span class="book-tag">그림책 · 4~7세</span><span class="book-tag">삽화 준비 중</span></span>
+          <span class="book-hook">"나눠 먹으면, 더 배부르다."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
@@ -437,6 +448,7 @@
       <a class="book-entry" href="stories/느림보-거북이-콩이.html">
         <span class="book-text">
           <span class="book-title">느림보 거북이 콩이<span class="book-tag">그림책 · 4~7세</span><span class="book-tag">삽화 준비 중</span></span>
+          <span class="book-hook">"느려서, 더 많이 보였다."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
@@ -444,6 +456,7 @@
       <a class="book-entry" href="stories/거짓말한-아기여우-소소.html">
         <span class="book-text">
           <span class="book-title">거짓말한 아기 여우 소소<span class="book-tag">그림책 · 4~7세</span><span class="book-tag">삽화 준비 중</span></span>
+          <span class="book-hook">"숨긴 것보다, 무거운 것."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
@@ -451,6 +464,7 @@
       <a class="book-entry" href="stories/우리집-두번째-왕관.html">
         <span class="book-text">
           <span class="book-title">우리 집 두 번째 왕관<span class="book-tag">그림책 · 4~7세</span><span class="book-tag">삽화 준비 중</span></span>
+          <span class="book-hook">"왕관은, 두 개가 될 수 있다."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
@@ -458,6 +472,7 @@
       <a class="book-entry" href="stories/빈자리.html">
         <span class="book-text">
           <span class="book-title">빈자리<span class="book-tag">단편 · 초등 5~6학년</span></span>
+          <span class="book-hook">"용기는, 그냥 옆에 앉는 것."</span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
