@@ -150,6 +150,36 @@
     border-radius: 999px; font-family: "IBM Plex Mono", monospace;
   }
 
+  .crew-card {
+    position: relative;
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-soft) 100%);
+    border-radius: 1.4rem;
+    overflow: hidden;
+    display: flex; flex-direction: column;
+    box-shadow: 0 1.2rem 2rem -1rem rgba(0,0,0,.55), inset 0 0 0 1px rgba(36,26,16,.06);
+    color: var(--ink);
+  }
+  .crew-card .portrait { width: 100%; aspect-ratio: 480 / 418; overflow: hidden; background: var(--wood); }
+  .crew-card .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .crew-card .crew-body {
+    padding: .9rem 1.1rem 1.2rem; display: flex; flex-direction: column; gap: .3rem; text-align: center;
+  }
+  .crew-persona { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.08rem; margin: 0; }
+  .crew-persona .en {
+    display: block; font-family: "IBM Plex Mono", monospace; font-weight: 400;
+    font-size: .66rem; letter-spacing: .05em; color: #6B5A3F; margin-top: .15rem;
+  }
+  .crew-role { margin: 0; font-size: .76rem; color: #6B5A3F; letter-spacing: .04em; }
+  .crew-status {
+    margin: .3rem 0 0; font-size: .74rem; font-family: "IBM Plex Mono", monospace; color: #4A3B26;
+    display: flex; align-items: center; justify-content: center; gap: .4rem;
+  }
+  .status-dot {
+    width: .5rem; height: .5rem; border-radius: 50%; background: #3E8E5B;
+    box-shadow: 0 0 6px rgba(62,142,91,.7); display: inline-block; flex: none;
+  }
+  .status-word { color: #2F6E48; font-weight: 500; }
+
   .process {
     display: flex; align-items: center; justify-content: center;
     gap: 0; flex-wrap: wrap; padding: .5rem 0;
@@ -220,52 +250,37 @@
       <h2>지금 문을 연 방</h2>
     </div>
     <div class="cabinet">
-      <article class="niche">
-        <div class="candle-wrap"><span class="candle-glow"></span><span class="candle"></span></div>
-        <div class="glyph">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="24" cy="9" r="3"/>
-            <path d="M24 12 L14 40"/>
-            <path d="M24 12 L34 40"/>
-            <path d="M17.5 30 L30.5 30" stroke-dasharray="2.5 4.5"/>
-          </svg>
+      <article class="crew-card">
+        <div class="portrait"><img src="images/planner.jpg" alt="기획 담당 에이전트 이소진의 초상" loading="lazy"></div>
+        <div class="crew-body">
+          <p class="crew-persona">이소진<span class="en">Isabella Lee</span></p>
+          <p class="crew-role">기획 담당 · 기획실</p>
+          <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
+          <p class="niche-duty">이야기의 씨앗을 고르고 로그라인과 등장인물을 정합니다.</p>
+          <p class="niche-stat"><span class="num">1</span>편 · 기획서 완료</p>
         </div>
-        <h3 class="niche-name">기획자</h3>
-        <p class="niche-room">기획실</p>
-        <p class="niche-duty">이야기의 씨앗을 고르고 로그라인과 등장인물을 정합니다.</p>
-        <p class="niche-stat"><span class="num">0</span>편 · 기획서 대기</p>
       </article>
 
-      <article class="niche">
-        <div class="candle-wrap"><span class="candle-glow"></span><span class="candle"></span></div>
-        <div class="glyph">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M35 7 C24 13 15 24 11 39"/>
-            <path d="M35 7 C30 9.5 26.5 13 24 17.5"/>
-            <path d="M11 39 C15.5 37 18.5 36.5 22 34.5"/>
-            <ellipse cx="15.5" cy="40.5" rx="7.5" ry="2.6"/>
-          </svg>
+      <article class="crew-card">
+        <div class="portrait"><img src="images/writer.jpg" alt="집필 담당 에이전트 최민우의 초상" loading="lazy"></div>
+        <div class="crew-body">
+          <p class="crew-persona">최민우<span class="en">Noah Choi</span></p>
+          <p class="crew-role">집필 담당 · 집필실</p>
+          <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
+          <p class="niche-duty">기획을 받아 처음부터 끝까지 완결된 이야기를 씁니다.</p>
+          <p class="niche-stat"><span class="num">0</span>편 · 초고 대기</p>
         </div>
-        <h3 class="niche-name">작가</h3>
-        <p class="niche-room">집필실</p>
-        <p class="niche-duty">기획을 받아 처음부터 끝까지 완결된 이야기를 씁니다.</p>
-        <p class="niche-stat"><span class="num">0</span>편 · 초고 대기</p>
       </article>
 
-      <article class="niche">
-        <div class="candle-wrap"><span class="candle-glow"></span><span class="candle"></span></div>
-        <div class="glyph">
-          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="24" cy="18" r="10"/>
-            <path d="M24 12.5 L24 23.5 M18.5 18 L29.5 18"/>
-            <path d="M17.5 26.5 L12.5 40 L20 35.5 Z"/>
-            <path d="M30.5 26.5 L35.5 40 L28 35.5 Z"/>
-          </svg>
+      <article class="crew-card">
+        <div class="portrait"><img src="images/critic.jpg" alt="심사 담당 에이전트 박미란의 초상" loading="lazy"></div>
+        <div class="crew-body">
+          <p class="crew-persona">박미란<span class="en">Dr. Miran Park</span></p>
+          <p class="crew-role">심사 담당 · 심사실</p>
+          <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
+          <p class="niche-duty">원고를 읽고 통과인지, 다시 써야 하는지 판정합니다.</p>
+          <p class="niche-stat"><span class="num">0</span>건 · 심사 대기</p>
         </div>
-        <h3 class="niche-name">심사위원</h3>
-        <p class="niche-room">심사실</p>
-        <p class="niche-duty">원고를 읽고 통과인지, 다시 써야 하는지 판정합니다.</p>
-        <p class="niche-stat"><span class="num">0</span>건 · 심사 대기</p>
       </article>
     </div>
   </section>
