@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>동화 공방</title>
+<meta name="description" content="fairy_tale 크루가 동화를 기획·집필·심사하는 공방의 근무 현황">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🕯️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  }
+
+  :root {
+    --wood-deep: #241C17;
+    --wood: #332620;
+    --wood-light: #4B392C;
+    --parchment: #F3E7CB;
+    --parchment-soft: #E7D8B4;
+    --brass: #C89A4C;
+    --brass-bright: #E7BE79;
+    --ink: #241A10;
+    --paper-ink: #F6ECD9;
+    --muted-paper: #C7B394;
+    --signal: #B1503C;
+    --hairline: rgba(243, 231, 203, 0.16);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -10%, var(--wood-light), transparent 60%),
+      var(--wood-deep);
+    color: var(--paper-ink);
+    font-family: "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
+
+  .motes { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+  .mote {
+    position: absolute; width: 3px; height: 3px; border-radius: 50%;
+    background: var(--brass-bright); opacity: .55; filter: blur(.3px);
+    animation: drift 14s ease-in-out infinite;
+  }
+  @keyframes drift {
+    0%, 100% { transform: translateY(0) translateX(0); opacity: .25; }
+    50% { transform: translateY(-22px) translateX(8px); opacity: .75; }
+  }
+
+  .page {
+    position: relative; z-index: 1;
+    max-width: 68rem; margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) clamp(1.2rem, 4vw, 2.5rem) 3.5rem;
+    display: flex; flex-direction: column; gap: clamp(2.6rem, 6vw, 4rem);
+  }
+
+  .masthead { text-align: center; display: flex; flex-direction: column; gap: .6rem; align-items: center; }
+  .eyebrow {
+    font-size: .72rem; letter-spacing: .32em; text-transform: uppercase;
+    color: var(--brass); font-weight: 500; margin: 0;
+  }
+  h1 {
+    font-family: "Gowun Batang", serif; font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 3.6rem); margin: 0; letter-spacing: -.01em;
+    text-wrap: balance; color: var(--paper-ink);
+  }
+  .tagline { margin: 0; color: var(--muted-paper); font-size: 1rem; max-width: 32rem; text-wrap: balance; }
+
+  section { display: flex; flex-direction: column; gap: 1.4rem; }
+  .section-head { display: flex; flex-direction: column; gap: .3rem; text-align: center; }
+  .section-head h2 {
+    font-family: "Gowun Batang", serif; font-weight: 700; margin: 0;
+    font-size: clamp(1.25rem, 3vw, 1.6rem); color: var(--paper-ink);
+  }
+
+  .cabinet { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.1rem; }
+  .cabinet.future { grid-template-columns: repeat(4, 1fr); }
+  @media (max-width: 760px) {
+    .cabinet, .cabinet.future { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 460px) {
+    .cabinet, .cabinet.future { grid-template-columns: 1fr; }
+  }
+
+  .niche {
+    position: relative;
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-soft) 100%);
+    border-radius: 1.6rem 1.6rem .5rem .5rem;
+    padding: 1.6rem 1.2rem 1.3rem;
+    display: flex; flex-direction: column; align-items: center; text-align: center; gap: .5rem;
+    box-shadow: 0 1.2rem 2rem -1rem rgba(0,0,0,.55), inset 0 0 0 1px rgba(36,26,16,.06);
+    color: var(--ink);
+  }
+  .niche::before {
+    content: ""; position: absolute; inset: .4rem .4rem auto .4rem; top: -.55rem;
+    height: .8rem; border-radius: 1.2rem 1.2rem 0 0;
+    background: var(--wood); opacity: .35;
+  }
+
+  .candle-wrap { position: relative; width: 2.6rem; height: 2.6rem; margin-bottom: .1rem; }
+  .candle {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: .55rem; height: .95rem; border-radius: 40% 40% 50% 50%;
+    background: radial-gradient(circle at 50% 20%, #FFE9A8, var(--signal) 85%);
+    animation: flicker 2.6s ease-in-out infinite;
+  }
+  .candle-glow {
+    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);
+    width: 2.6rem; height: 2.6rem; border-radius: 50%;
+    background: radial-gradient(circle, rgba(231,190,121,.55), transparent 70%);
+    animation: flicker 2.6s ease-in-out infinite;
+  }
+  @keyframes flicker {
+    0%, 100% { opacity: .85; transform: translate(-50%, -50%) scale(1); }
+    45% { opacity: 1; transform: translate(-50%, -50%) scale(1.06); }
+    60% { opacity: .75; transform: translate(-50%,-49%) scale(.97); }
+  }
+
+  .glyph { width: 3.4rem; height: 3.4rem; color: var(--signal); }
+  .glyph svg { width: 100%; height: 100%; }
+
+  .niche-name { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.15rem; margin: .1rem 0 0; }
+  .niche-room { margin: -.3rem 0 0; font-size: .74rem; letter-spacing: .06em; color: #6B5A3F; }
+  .niche-duty { margin: .2rem 0 0; font-size: .82rem; line-height: 1.55; color: #4A3B26; }
+  .niche-stat {
+    margin: .5rem 0 0; padding-top: .5rem; width: 100%;
+    border-top: 1px dashed rgba(36,26,16,.2);
+    font-size: .78rem; color: #6B5A3F;
+  }
+  .niche-stat .num { font-family: "IBM Plex Mono", monospace; font-weight: 500; color: var(--signal); font-size: .95rem; }
+
+  .niche.is-future {
+    filter: grayscale(.5); opacity: .78;
+    padding: 1.2rem 1rem 1rem;
+  }
+  .niche.is-future .glyph { color: #7A6B52; width: 2.6rem; height: 2.6rem; }
+  .niche.is-future .niche-name { font-size: 1rem; }
+  .niche.is-future .niche-duty { font-size: .76rem; }
+  .niche.is-future .badge {
+    margin-top: .4rem; font-size: .68rem; letter-spacing: .08em;
+    color: #7A6B52; background: rgba(36,26,16,.08); padding: .2rem .6rem;
+    border-radius: 999px; font-family: "IBM Plex Mono", monospace;
+  }
+
+  .process {
+    display: flex; align-items: center; justify-content: center;
+    gap: 0; flex-wrap: wrap; padding: .5rem 0;
+  }
+  .stage { display: flex; flex-direction: column; align-items: center; gap: .4rem; width: 8.5rem; }
+  .stage-dot {
+    width: 2.6rem; height: 2.6rem; border-radius: 50%;
+    background: var(--wood-light); border: 1px solid var(--hairline);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--brass-bright); font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1rem;
+  }
+  .stage-name { font-weight: 500; font-size: .88rem; color: var(--paper-ink); }
+  .stage-cmd {
+    font-family: "IBM Plex Mono", monospace; font-size: .74rem; color: var(--brass);
+    background: rgba(200,154,76,.12); padding: .15rem .55rem; border-radius: .3rem;
+  }
+  .stage-link {
+    flex: 0 0 3rem; height: 1px; background: repeating-linear-gradient(90deg, var(--hairline) 0 6px, transparent 6px 11px);
+    margin: 0 -.2rem; align-self: flex-start; margin-top: 1.3rem;
+  }
+  @media (max-width: 620px) {
+    .stage-link { display: none; }
+  }
+
+  .colophon {
+    border-top: 1px solid var(--hairline);
+    padding-top: 1.4rem;
+    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem 2rem;
+    font-size: .8rem; color: var(--muted-paper); line-height: 1.7;
+  }
+  .colophon p { margin: 0; max-width: 30rem; }
+  .colophon .links { display: flex; flex-direction: column; gap: .3rem; align-items: flex-end; }
+  .colophon a { color: var(--brass-bright); text-decoration: none; }
+  .colophon a:hover { text-decoration: underline; }
+  .colophon .stamp { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: #8A7A5C; }
+  @media (max-width: 560px) {
+    .colophon { flex-direction: column; }
+    .colophon .links { align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="motes" aria-hidden="true">
+  <span class="mote" style="left:8%; top:20%; animation-delay:0s;"></span>
+  <span class="mote" style="left:22%; top:65%; animation-delay:1.2s;"></span>
+  <span class="mote" style="left:38%; top:12%; animation-delay:2.4s;"></span>
+  <span class="mote" style="left:52%; top:80%; animation-delay:.6s;"></span>
+  <span class="mote" style="left:67%; top:30%; animation-delay:1.8s;"></span>
+  <span class="mote" style="left:79%; top:55%; animation-delay:3s;"></span>
+  <span class="mote" style="left:90%; top:18%; animation-delay:.9s;"></span>
+  <span class="mote" style="left:14%; top:88%; animation-delay:2.1s;"></span>
+  <span class="mote" style="left:60%; top:8%; animation-delay:1.5s;"></span>
+  <span class="mote" style="left:33%; top:45%; animation-delay:2.7s;"></span>
+</div>
+
+<div class="page">
+
+  <header class="masthead">
+    <p class="eyebrow">FAIRY TALE ATELIER</p>
+    <h1>동화 공방</h1>
+    <p class="tagline">fairy_tale 크루가 밤마다 촛불을 켜고 이야기를 짓는 곳</p>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <p class="eyebrow mono">OPEN NOW</p>
+      <h2>지금 문을 연 방</h2>
+    </div>
+    <div class="cabinet">
+      <article class="niche">
+        <div class="candle-wrap"><span class="candle-glow"></span><span class="candle"></span></div>
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="9" r="3"/>
+            <path d="M24 12 L14 40"/>
+            <path d="M24 12 L34 40"/>
+            <path d="M17.5 30 L30.5 30" stroke-dasharray="2.5 4.5"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">기획자</h3>
+        <p class="niche-room">기획실</p>
+        <p class="niche-duty">이야기의 씨앗을 고르고 로그라인과 등장인물을 정합니다.</p>
+        <p class="niche-stat"><span class="num">0</span>편 · 기획서 대기</p>
+      </article>
+
+      <article class="niche">
+        <div class="candle-wrap"><span class="candle-glow"></span><span class="candle"></span></div>
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M35 7 C24 13 15 24 11 39"/>
+            <path d="M35 7 C30 9.5 26.5 13 24 17.5"/>
+            <path d="M11 39 C15.5 37 18.5 36.5 22 34.5"/>
+            <ellipse cx="15.5" cy="40.5" rx="7.5" ry="2.6"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">작가</h3>
+        <p class="niche-room">집필실</p>
+        <p class="niche-duty">기획을 받아 처음부터 끝까지 완결된 이야기를 씁니다.</p>
+        <p class="niche-stat"><span class="num">0</span>편 · 초고 대기</p>
+      </article>
+
+      <article class="niche">
+        <div class="candle-wrap"><span class="candle-glow"></span><span class="candle"></span></div>
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="24" cy="18" r="10"/>
+            <path d="M24 12.5 L24 23.5 M18.5 18 L29.5 18"/>
+            <path d="M17.5 26.5 L12.5 40 L20 35.5 Z"/>
+            <path d="M30.5 26.5 L35.5 40 L28 35.5 Z"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">심사위원</h3>
+        <p class="niche-room">심사실</p>
+        <p class="niche-duty">원고를 읽고 통과인지, 다시 써야 하는지 판정합니다.</p>
+        <p class="niche-stat"><span class="num">0</span>건 · 심사 대기</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <p class="eyebrow mono">NEXT TO MOVE IN</p>
+      <h2>다음에 합류할 이웃들</h2>
+    </div>
+    <div class="cabinet future">
+      <article class="niche is-future">
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 40 L20 29"/>
+            <path d="M18.5 27.5 L34.5 11 L38 14.5 L22 31 Z"/>
+            <circle cx="36" cy="13" r="1.8" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">트렌드 리서처</h3>
+        <p class="niche-duty">국내외 인기 소재와 독자 취향을 살핍니다.</p>
+        <span class="badge">준비 중</span>
+      </article>
+
+      <article class="niche is-future">
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M31 8 L41 18 L21 38 L12 40 L14 31 Z"/>
+            <circle cx="15" cy="35.5" r="1.6" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">북디자이너</h3>
+        <p class="niche-duty">표지와 삽화, 판형을 구상합니다.</p>
+        <span class="badge">준비 중</span>
+      </article>
+
+      <article class="niche is-future">
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 6 L14 42"/>
+            <path d="M14 8.5 L36 15 L14 23 Z"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">마케터</h3>
+        <p class="niche-duty">완성작을 알릴 카피와 채널을 만듭니다.</p>
+        <span class="badge">준비 중</span>
+      </article>
+
+      <article class="niche is-future">
+        <div class="glyph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="14" cy="14" r="6"/>
+            <path d="M18.5 18.5 L38 38"/>
+            <path d="M30.5 30.5 L35 26"/>
+            <path d="M34.5 34.5 L39 30"/>
+          </svg>
+        </div>
+        <h3 class="niche-name">총무</h3>
+        <p class="niche-duty">공방 전체의 진행 상황을 정리합니다.</p>
+        <span class="badge">준비 중</span>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <p class="eyebrow mono">HOW A STORY MOVES</p>
+      <h2>일하는 순서</h2>
+    </div>
+    <div class="process">
+      <div class="stage">
+        <div class="stage-dot">1</div>
+        <div class="stage-name">기획</div>
+        <div class="stage-cmd">/plan</div>
+      </div>
+      <div class="stage-link"></div>
+      <div class="stage">
+        <div class="stage-dot">2</div>
+        <div class="stage-name">집필</div>
+        <div class="stage-cmd">/write</div>
+      </div>
+      <div class="stage-link"></div>
+      <div class="stage">
+        <div class="stage-dot">3</div>
+        <div class="stage-name">심사</div>
+        <div class="stage-cmd">/review</div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="colophon">
+    <p>이 공방은 아직 정해진 근무시간표가 없습니다. 사람이 슬래시 커맨드로 방문을 두드려야 방에 불이 켜집니다 — 자동으로 돌아가는 것처럼 꾸미지 않습니다.</p>
+    <div class="links">
+      <a href="https://github.com/heekeunlee/fairy_tale_office" target="_blank" rel="noopener">이 공방의 도면 →</a>
+      <a href="https://github.com/heekeunlee/ai_crew" target="_blank" rel="noopener">공방 구조에 영감을 준 ai_crew →</a>
+      <span class="stamp">2026-08-27 · 처음 문을 열다</span>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
