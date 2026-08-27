@@ -228,6 +228,11 @@
   .book-entry .book-text { display: flex; flex-direction: column; gap: .25rem; }
   .book-entry .book-title { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.05rem; }
   .book-entry .book-meta { font-family: "IBM Plex Mono", monospace; font-size: .7rem; color: var(--muted-paper); letter-spacing: .03em; }
+  .book-entry .book-tag {
+    font-family: "IBM Plex Mono", monospace; font-size: .64rem; letter-spacing: .04em;
+    color: var(--brass-bright); background: rgba(200,154,76,.16); padding: .1rem .5rem;
+    border-radius: 999px; margin-left: .5rem;
+  }
   .book-entry .arrow { color: var(--brass-bright); font-size: 1.2rem; flex: none; }
 
   .colophon {
@@ -283,7 +288,7 @@
           <p class="crew-role">기획 담당 · 기획실</p>
           <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
           <p class="niche-duty">이야기의 씨앗을 고르고 로그라인과 등장인물을 정합니다.</p>
-          <p class="niche-stat"><span class="num">1</span>편 · 기획서 완료</p>
+          <p class="niche-stat"><span class="num">2</span>편 · 기획서 완료</p>
         </div>
       </article>
 
@@ -294,7 +299,7 @@
           <p class="crew-role">집필 담당 · 집필실</p>
           <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
           <p class="niche-duty">기획을 받아 처음부터 끝까지 완결된 이야기를 씁니다.</p>
-          <p class="niche-stat"><span class="num">1</span>편 · 초고 완료</p>
+          <p class="niche-stat"><span class="num">2</span>편 · 초고 완료</p>
         </div>
       </article>
 
@@ -305,7 +310,7 @@
           <p class="crew-role">심사 담당 · 심사실</p>
           <p class="crew-status"><span class="status-dot"></span>status: <span class="status-word">active</span></p>
           <p class="niche-duty">원고를 읽고 통과인지, 다시 써야 하는지 판정합니다.</p>
-          <p class="niche-stat"><span class="num">1</span>건 · 심사 통과</p>
+          <p class="niche-stat"><span class="num">2</span>건 · 심사 통과</p>
         </div>
       </article>
 
@@ -406,12 +411,19 @@
       <p class="eyebrow mono">THE SHELF</p>
       <h2>완성작 서재</h2>
     </div>
-    <p class="shelf-note">정다은이 그린 삽화와 함께, 그림책처럼 페이지를 넘기며 읽을 수 있어요.</p>
+    <p class="shelf-note">그림책도, 삽화 없는 단편도 있어요. 대상 연령이 작품마다 달라요.</p>
     <div class="shelf">
       <a class="book-entry" href="stories/반딧불이-콩콩이.html">
         <span class="book-text">
-          <span class="book-title">반딧불이 콩콩이, 처음 불을 켜다</span>
+          <span class="book-title">반딧불이 콩콩이, 처음 불을 켜다<span class="book-tag">그림책 · 4~7세</span></span>
           <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 삽화 정다은 · 완결</span>
+        </span>
+        <span class="arrow">→</span>
+      </a>
+      <a class="book-entry" href="stories/우리만-아는-레시피.html">
+        <span class="book-text">
+          <span class="book-title">우리만 아는 레시피<span class="book-tag">단편 · 초등 5~6학년</span></span>
+          <span class="book-meta">기획 이소진 · 집필 최민우 · 심사 박미란 · 완결</span>
         </span>
         <span class="arrow">→</span>
       </a>
