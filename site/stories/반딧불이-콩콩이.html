@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>반딧불이 콩콩이, 처음 불을 켜다</title>
-<meta name="description" content="동화 공방 완성작 제1호 — 겁 많은 반딧불이 콩콩이가 처음으로 빛을 켜는 이야기">
+<meta name="description" content="동화 공방 완성작 제1호 — 겁 많은 반딧불이 콩콩이가 처음으로 빛을 켜는 이야기, 삽화가 있는 그림책 버전">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='13' font-size='13'>🕯️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,9 +43,9 @@
   .mono { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; }
 
   .wrap {
-    max-width: 40rem; margin: 0 auto;
-    padding: clamp(2rem, 6vw, 4rem) clamp(1.1rem, 4vw, 1.5rem) 4rem;
-    display: flex; flex-direction: column; gap: 1.6rem;
+    max-width: 34rem; margin: 0 auto;
+    padding: clamp(2rem, 6vw, 3.5rem) clamp(1.1rem, 4vw, 1.5rem) 4rem;
+    display: flex; flex-direction: column; gap: 1.4rem;
   }
 
   .back-link {
@@ -61,40 +61,136 @@
   }
   .book-header h1 {
     font-family: "Gowun Batang", serif; font-weight: 700;
-    font-size: clamp(1.7rem, 5vw, 2.3rem); margin: 0; letter-spacing: -.01em;
+    font-size: clamp(1.5rem, 5vw, 2rem); margin: 0; letter-spacing: -.01em;
     text-wrap: balance; color: var(--paper-ink);
   }
   .credits {
-    font-family: "IBM Plex Mono", monospace; font-size: .74rem;
+    font-family: "IBM Plex Mono", monospace; font-size: .72rem;
     color: var(--muted-paper); margin: 0;
   }
 
-  .page {
+  .book {
     background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-soft) 100%);
     border-radius: 1.2rem;
-    padding: clamp(1.8rem, 6vw, 3.2rem) clamp(1.6rem, 6vw, 3rem);
+    padding: clamp(1rem, 4vw, 1.4rem);
     box-shadow: 0 1.5rem 3rem -1.2rem rgba(0,0,0,.6), inset 0 0 0 1px rgba(36,26,16,.06);
     color: var(--ink);
+    display: flex; flex-direction: column; gap: 1rem;
   }
-  .page p {
-    font-family: "Noto Serif KR", serif;
-    font-size: 1.06rem; line-height: 1.95;
-    margin: 0 0 1.4rem;
+
+  .scene {
+    width: 100%; aspect-ratio: 480 / 280; border-radius: .7rem; overflow: hidden;
+    background: #1B1730;
   }
-  .page p:last-child { margin-bottom: 0; }
-  .page p.climax {
-    text-align: center; font-weight: 700; color: #A3431F;
-    font-size: 1.25rem; margin: 1.8rem 0;
+  .scene svg { width: 100%; height: 100%; display: block; }
+  .silhouette { color: #1B2A22; }
+
+  #leafText { min-height: 5.5rem; }
+  #leafText p {
+    font-family: "Noto Serif KR", serif; font-size: 1.02rem; line-height: 1.85;
+    margin: 0;
   }
+  #leafText.climax p {
+    text-align: center; font-weight: 700; color: #A3431F; font-size: 1.15rem;
+  }
+  #leafText.closing {
+    text-align: center;
+  }
+  #leafText.closing .the-end {
+    font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.6rem;
+    color: var(--ink); display: block; margin-bottom: .6rem;
+  }
+
+  .pager {
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    border-top: 1px dashed rgba(36,26,16,.2); padding-top: .8rem;
+  }
+  .pager button {
+    font-family: "IBM Plex Mono", monospace; font-size: .85rem;
+    background: var(--wood); color: var(--paper-ink); border: none;
+    border-radius: .5rem; padding: .5rem 1rem; cursor: pointer;
+  }
+  .pager button:hover:not(:disabled) { background: var(--wood-light); }
+  .pager button:disabled { opacity: .35; cursor: default; }
+  .pager button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  .pager .count { font-family: "IBM Plex Mono", monospace; font-size: .78rem; color: #6B5A3F; }
 
   footer {
     text-align: center; font-size: .78rem; color: var(--muted-paper); line-height: 1.7;
   }
   footer a { color: var(--brass-bright); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .fade { animation: fadein .25s ease; }
+  @keyframes fadein { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 </head>
 <body>
+
+<svg style="position:absolute; width:0; height:0; overflow:hidden" aria-hidden="true">
+<defs>
+  <linearGradient id="sky-grad" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#1B1730"/>
+    <stop offset="100%" stop-color="#39304C"/>
+  </linearGradient>
+  <radialGradient id="sky-grad-warm" cx="50%" cy="55%" r="75%">
+    <stop offset="0%" stop-color="#6B4423"/>
+    <stop offset="55%" stop-color="#2E2138"/>
+    <stop offset="100%" stop-color="#1B1730"/>
+  </radialGradient>
+  <filter id="glow" x="-150%" y="-150%" width="400%" height="400%">
+    <feGaussianBlur stdDeviation="2.2" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <filter id="glow-strong" x="-250%" y="-250%" width="600%" height="600%">
+    <feGaussianBlur stdDeviation="5" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+
+  <symbol id="i-moon" viewBox="0 0 60 60"><circle cx="30" cy="30" r="24" fill="#F3E3B8"/><circle cx="30" cy="30" r="24" fill="#FFF7DE" opacity=".25"/></symbol>
+  <symbol id="i-tree" viewBox="0 0 60 90"><rect x="26" y="58" width="8" height="28" fill="currentColor"/><ellipse cx="30" cy="42" rx="26" ry="34" fill="currentColor"/></symbol>
+  <symbol id="i-grass" viewBox="0 0 80 50">
+    <path d="M5 50 Q10 20 2 0" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M22 50 Q24 15 16 0" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M38 50 Q43 20 49 2" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M55 50 Q57 18 65 3" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M70 50 Q73 25 78 10" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </symbol>
+  <symbol id="i-reeds" viewBox="0 0 60 100">
+    <path d="M10 100 Q14 50 8 5" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="8" cy="5" rx="3" ry="8" fill="currentColor"/>
+    <path d="M30 100 Q32 45 26 8" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="26" cy="8" rx="3" ry="8" fill="currentColor"/>
+    <path d="M48 100 Q52 55 46 10" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="46" cy="10" rx="3" ry="8" fill="currentColor"/>
+  </symbol>
+  <symbol id="i-firefly-off" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="#6B6552"/></symbol>
+  <symbol id="i-firefly-on" viewBox="0 0 20 20"><circle cx="10" cy="10" r="4" fill="#FFD873" filter="url(#glow)"/></symbol>
+  <symbol id="i-firefly-warm" viewBox="0 0 20 20"><circle cx="10" cy="10" r="5.5" fill="#FFB55C" filter="url(#glow-strong)"/></symbol>
+  <symbol id="i-owl" viewBox="0 0 60 70">
+    <path d="M12 18 L20 4 L26 20 Z" fill="currentColor"/><path d="M48 18 L40 4 L34 20 Z" fill="currentColor"/>
+    <ellipse cx="30" cy="40" rx="24" ry="28" fill="currentColor"/>
+    <circle cx="22" cy="36" r="6.5" fill="#F3E7CB"/><circle cx="38" cy="36" r="6.5" fill="#F3E7CB"/>
+    <circle cx="22" cy="36" r="2.6" fill="#241A10"/><circle cx="38" cy="36" r="2.6" fill="#241A10"/>
+    <path d="M27 44 L33 44 L30 49 Z" fill="#C89A4C"/>
+  </symbol>
+  <symbol id="i-mole" viewBox="0 0 50 40">
+    <ellipse cx="25" cy="24" rx="18" ry="14" fill="currentColor"/><ellipse cx="9" cy="26" rx="6" ry="4" fill="currentColor"/>
+    <circle cx="19" cy="20" r="1.8" fill="#F3E7CB"/>
+  </symbol>
+  <symbol id="i-mole-mother" viewBox="0 0 70 55">
+    <ellipse cx="35" cy="32" rx="26" ry="20" fill="currentColor"/><ellipse cx="13" cy="35" rx="8" ry="5" fill="currentColor"/>
+    <circle cx="25" cy="26" r="2.2" fill="#F3E7CB"/>
+  </symbol>
+  <symbol id="i-tremble" viewBox="0 0 30 20"><path d="M2 10 Q6 4 10 10 T18 10 T26 10" stroke="#E7BE79" stroke-width="2" fill="none" stroke-linecap="round" opacity=".8"/></symbol>
+  <symbol id="i-burst" viewBox="0 0 100 100">
+    <g stroke="#FFD98A" stroke-width="3" stroke-linecap="round" opacity=".85">
+      <line x1="50" y1="50" x2="50" y2="8"/><line x1="50" y1="50" x2="84" y2="22"/>
+      <line x1="50" y1="50" x2="92" y2="50"/><line x1="50" y1="50" x2="84" y2="78"/>
+      <line x1="50" y1="50" x2="50" y2="92"/><line x1="50" y1="50" x2="16" y2="78"/>
+      <line x1="50" y1="50" x2="8" y2="50"/><line x1="50" y1="50" x2="16" y2="22"/>
+    </g>
+  </symbol>
+</defs>
+</svg>
+
 <div class="wrap">
 
   <a class="back-link" href="../index.html">← 동화 공방으로</a>
@@ -102,45 +198,158 @@
   <header class="book-header">
     <p class="eyebrow mono">FAIRY TALE ATELIER · NO.1</p>
     <h1>반딧불이 콩콩이, 처음 불을 켜다</h1>
-    <p class="credits">기획 이소진 · 집필 최민우 · 심사 박미란 · v2 · 통과</p>
+    <p class="credits">기획 이소진 · 집필 최민우 · 심사 박미란 · 삽화 정다은 · v2 · 통과</p>
   </header>
 
-  <article class="page">
-    <p>여름밤, 숲속에 작은 반딧불이들이 모였어요.<br>이슬 맺힌 풀잎 사이로 서늘한 바람이 살랑 불었어요.<br>"반짝반짝!" "반짝반짝!"<br>친구들은 불을 켜고 이리저리 날아다니며 술래잡기를 했어요.</p>
-
-    <p>콩콩이는 늘 그렇듯, 개울가 근처 풀숲에 꼭꼭 숨어 그 모습을 구경만 했어요.<br>깜빡, 깜빡. 콩콩이는 오늘도 불을 켜지 않았어요.</p>
-
-    <p>"콩콩아, 같이 놀자!"<br>반짝이가 풀숲을 향해 소리쳤어요.<br>콩콩이는 고개를 절레절레 저었어요.<br>"내 불빛이 이상하게 생겼으면 어떡해... 불을 켰다가 무서운 게 나를 찾아오면 어떡해..."</p>
-
-    <p>반짝이는 억지로 조르지 않았어요.<br>그냥 콩콩이 옆에 살포시 내려앉아, 함께 달을 올려다봐 주었어요.</p>
-
-    <p>그때, 나뭇가지 위에서 부엉이 할머니가 눈을 끔뻑였어요.<br>"나도 어릴 때는 날갯소리가 부끄러워서, 나무 위에서 못 내려왔단다."<br>할머니는 잠시 먼 곳을 바라보다 말했어요.<br>"그런데 말이야, 그날 밤 나는 딱 한 번 날아봤어."<br>할머니는 그 말만 남기고 훌쩍 날아가 버렸어요.</p>
-
-    <p>밤이 점점 깊어졌어요.<br>시끄럽던 풀벌레 소리도 어느새 뚝 끊기고, 숲은 고요해졌어요.<br>그런데 저 멀리 개울가에서, 가느다란 울음소리가 들려왔어요.<br>"흑흑... 엄마... 엄마 어디 있어요..."<br>아기 두더지가 갈대숲 사이에 갇혀 길을 잃고 울고 있었어요.</p>
-
-    <p>"찾으러 가자!"<br>반딧불이들이 사방으로 흩어졌어요.<br>하지만 숲은 너무 어둡고 넓어서, 서로 부르는 소리만 엇갈릴 뿐이었어요.</p>
-
-    <p>콩콩이가 숨어 있던 자리는 갈대숲과 가장 가까웠어요.<br>울음소리가 점점 크고, 점점 가깝게 들렸어요.<br>콩콩이의 작은 심장이 두근두근 뛰었어요.<br>더듬이도 파르르 떨렸어요.</p>
-
-    <p>콩콩이는 두 눈을 꼭 감았어요.<br>그리고 떨리는 몸을 다잡고, 태어나서 처음으로 배 끝에 힘을 주었어요.</p>
-
-    <p>깜빡... 깜빡...<br>서툴게 흔들리던 불빛이, 조금씩 조금씩 밝아졌어요.</p>
-
-    <p class="climax">깜빡! 콩콩이가 드디어 불을 켰어요!</p>
-
-    <p>환하게 켜진 빛을 보고 친구들이 한걸음에 달려왔어요.<br>저 멀리서 두더지 엄마도 그 빛을 보고 달려왔어요.<br>"저기다!"<br>아기 두더지는 엄마 품에 폭 안겼어요.</p>
-
-    <p>"고마워, 꼬마 반딧불이야."<br>두더지 엄마가 콩콩이에게 고개를 숙여 인사했어요.<br>콩콩이는 부끄러운 듯 몸을 움츠렸지만, 이내 활짝 웃으며 불빛을 반짝였어요.</p>
-
-    <p>그날 이후로 콩콩이는 매일 밤, 친구들과 나란히 앉아 함께 반짝였어요.</p>
-
-    <p>그런데 참 이상하죠.<br>콩콩이의 불빛만은, 유독 조금 더 크고, 조금 더 따뜻했어요.</p>
-  </article>
+  <div class="book">
+    <div class="scene" id="scene"></div>
+    <div id="leafText"></div>
+    <nav class="pager">
+      <button id="prevBtn" type="button">← 이전</button>
+      <span class="count mono" id="count"></span>
+      <button id="nextBtn" type="button">다음 →</button>
+    </nav>
+  </div>
 
   <footer>
-    아직 삽화 없는 원고예요. <a href="../index.html">동화 공방</a>의 다른 방들이 마저 채워지면 그림도 붙을 예정입니다.
+    삽화는 북디자이너 정다은이 그렸어요. <a href="../index.html">동화 공방</a>에서 다른 완성작도 계속 늘어날 예정입니다.
   </footer>
 
 </div>
+
+<script>
+const U = (id, x, y, w, h, cls) => `<use href="#${id}" x="${x}" y="${y}" width="${w}" height="${h}"${cls ? ` class="${cls}"` : ''}/>`;
+
+function scene(inner, warm) {
+  const bg = warm ? 'sky-grad-warm' : 'sky-grad';
+  return `<svg viewBox="0 0 480 280" xmlns="http://www.w3.org/2000/svg"><rect width="480" height="280" fill="url(#${bg})"/>${inner}</svg>`;
+}
+
+const pages = [
+  {
+    svg: scene(
+      U('i-tree',10,150,70,130,'silhouette') + U('i-tree',60,170,55,110,'silhouette') + U('i-tree',400,160,60,120,'silhouette') +
+      U('i-moon',205,15,55,55) +
+      U('i-firefly-on',120,95,20,20) + U('i-firefly-on',185,60,20,20) + U('i-firefly-on',260,115,20,20) + U('i-firefly-on',320,75,20,20) + U('i-firefly-on',235,150,20,20)
+    ),
+    text: `<p>여름밤, 숲속에 작은 반딧불이들이 모였어요.<br>이슬 맺힌 풀잎 사이로 서늘한 바람이 살랑 불었어요.<br>"반짝반짝!" "반짝반짝!"<br>친구들은 불을 켜고 이리저리 날아다니며 술래잡기를 했어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-grass',15,210,95,60,'silhouette') + U('i-grass',350,215,100,55,'silhouette') +
+      U('i-moon',410,20,42,42) +
+      `<g opacity=".45">` + U('i-firefly-on',150,90,16,16) + U('i-firefly-on',220,70,16,16) + U('i-firefly-on',300,100,16,16) + `</g>` +
+      U('i-firefly-off',55,222,18,18)
+    ),
+    text: `<p>콩콩이는 늘 그렇듯, 개울가 근처 풀숲에 꼭꼭 숨어 그 모습을 구경만 했어요.<br>깜빡, 깜빡. 콩콩이는 오늘도 불을 켜지 않았어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-grass',185,225,110,55,'silhouette') +
+      U('i-moon',195,12,72,72) +
+      U('i-firefly-on',205,203,20,20) + U('i-firefly-off',236,207,18,18)
+    ),
+    text: `<p>"콩콩아, 같이 놀자!"<br>반짝이가 풀숲을 향해 소리쳤어요.<br>콩콩이는 고개를 절레절레 저었어요.<br>"내 불빛이 이상하게 생겼으면 어떡해... 불을 켰다가 무서운 게 나를 찾아오면 어떡해..."</p><p>반짝이는 억지로 조르지 않았어요. 그냥 콩콩이 옆에 살포시 내려앉아, 함께 달을 올려다봐 주었어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-tree',165,35,130,225,'silhouette') +
+      U('i-owl',195,100,70,80,'silhouette') +
+      U('i-moon',355,28,50,50) +
+      `<g opacity=".4">` + U('i-firefly-on',55,205,14,14) + U('i-firefly-on',430,220,14,14) + `</g>`
+    ),
+    text: `<p>그때, 나뭇가지 위에서 부엉이 할머니가 눈을 끔뻑였어요.<br>"나도 어릴 때는 날갯소리가 부끄러워서, 나무 위에서 못 내려왔단다."<br>할머니는 잠시 먼 곳을 바라보다 말했어요.<br>"그런데 말이야, 그날 밤 나는 딱 한 번 날아봤어."<br>할머니는 그 말만 남기고 훌쩍 날아가 버렸어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-reeds',255,150,70,110,'silhouette') + U('i-reeds',305,162,58,98,'silhouette') +
+      U('i-mole',268,222,55,44,'silhouette') +
+      U('i-moon',55,22,42,42)
+    ),
+    text: `<p>밤이 점점 깊어졌어요.<br>시끄럽던 풀벌레 소리도 어느새 뚝 끊기고, 숲은 고요해졌어요.<br>그런데 저 멀리 개울가에서, 가느다란 울음소리가 들려왔어요.<br>"흑흑... 엄마... 엄마 어디 있어요..."<br>아기 두더지가 갈대숲 사이에 갇혀 길을 잃고 울고 있었어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-tree',-5,140,60,140,'silhouette') + U('i-tree',420,130,60,150,'silhouette') +
+      U('i-reeds',190,192,50,88,'silhouette') +
+      U('i-firefly-off',203,214,18,18) + U('i-tremble',224,202,28,20) +
+      U('i-firefly-on',60,80,18,18) + U('i-firefly-on',150,60,18,18) + U('i-firefly-on',300,90,18,18) + U('i-firefly-on',380,60,18,18) + U('i-firefly-on',415,180,18,18)
+    ),
+    text: `<p>"찾으러 가자!"<br>반딧불이들이 사방으로 흩어졌어요.<br>하지만 숲은 너무 어둡고 넓어서, 서로 부르는 소리만 엇갈릴 뿐이었어요.</p><p>콩콩이가 숨어 있던 자리는 갈대숲과 가장 가까웠어요.<br>울음소리가 점점 크고, 점점 가깝게 들렸어요.<br>콩콩이의 작은 심장이 두근두근 뛰었어요. 더듬이도 파르르 떨렸어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-grass',195,248,50,32,'silhouette') +
+      U('i-burst',185,80,110,110) +
+      U('i-firefly-warm',228,118,26,26),
+      true
+    ),
+    text: `<p>콩콩이는 두 눈을 꼭 감았어요.<br>그리고 떨리는 몸을 다잡고, 태어나서 처음으로 배 끝에 힘을 주었어요.</p><p>깜빡... 깜빡... 서툴게 흔들리던 불빛이, 조금씩 조금씩 밝아졌어요.</p>`,
+    climax: `<p>깜빡! 콩콩이가 드디어 불을 켰어요!</p>`
+  },
+  {
+    svg: scene(
+      U('i-reeds',165,168,60,112,'silhouette') + U('i-reeds',245,175,55,105,'silhouette') +
+      U('i-mole',200,228,50,40,'silhouette') + U('i-mole-mother',232,208,68,54,'silhouette') +
+      U('i-firefly-warm',185,148,24,24) +
+      U('i-firefly-on',115,120,18,18) + U('i-firefly-on',340,108,18,18) + U('i-firefly-on',155,78,18,18) + U('i-firefly-on',300,68,18,18) +
+      U('i-moon',28,24,40,40)
+    ),
+    text: `<p>환하게 켜진 빛을 보고 친구들이 한걸음에 달려왔어요.<br>저 멀리서 두더지 엄마도 그 빛을 보고 달려왔어요.<br>"저기다!"<br>아기 두더지는 엄마 품에 폭 안겼어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-grass',165,225,100,55,'silhouette') +
+      U('i-mole-mother',225,190,64,50,'silhouette') +
+      U('i-firefly-warm',195,200,24,24) + U('i-firefly-on',158,193,20,20) +
+      U('i-moon',378,22,45,45)
+    ),
+    text: `<p>"고마워, 꼬마 반딧불이야."<br>두더지 엄마가 콩콩이에게 고개를 숙여 인사했어요.<br>콩콩이는 부끄러운 듯 몸을 움츠렸지만, 이내 활짝 웃으며 불빛을 반짝였어요.</p>`
+  },
+  {
+    svg: scene(
+      U('i-tree',5,140,60,140,'silhouette') + U('i-tree',415,150,60,130,'silhouette') +
+      U('i-grass',150,235,180,45,'silhouette') +
+      U('i-firefly-on',140,178,18,18) + U('i-firefly-on',190,163,18,18) + U('i-firefly-on',290,168,18,18) + U('i-firefly-on',340,183,18,18) +
+      U('i-firefly-warm',235,150,28,28) +
+      U('i-moon',207,18,55,55)
+    ),
+    text: `<p>그날 이후로 콩콩이는 매일 밤, 친구들과 나란히 앉아 함께 반짝였어요.</p><p>그런데 참 이상하죠. 콩콩이의 불빛만은, 유독 조금 더 크고, 조금 더 따뜻했어요.</p>`
+  },
+  {
+    svg: scene(U('i-moon',210,60,60,60,'') + U('i-firefly-warm',233,150,28,28), true),
+    text: `<span class="the-end">끝</span><p>기획 이소진 · 집필 최민우 · 심사 박미란<br>삽화 정다은</p>`,
+    closing: true
+  }
+];
+
+const sceneEl = document.getElementById('scene');
+const textEl = document.getElementById('leafText');
+const countEl = document.getElementById('count');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+let idx = 0;
+
+function render() {
+  const p = pages[idx];
+  sceneEl.innerHTML = p.svg;
+  textEl.innerHTML = (p.text || '') + (p.climax || '');
+  textEl.className = [p.climax ? 'climax' : '', p.closing ? 'closing' : ''].join(' ').trim();
+  sceneEl.classList.remove('fade'); void sceneEl.offsetWidth; sceneEl.classList.add('fade');
+  textEl.classList.add('fade');
+  countEl.textContent = `${idx + 1} / ${pages.length}`;
+  prevBtn.disabled = idx === 0;
+  nextBtn.disabled = idx === pages.length - 1;
+}
+
+prevBtn.addEventListener('click', () => { if (idx > 0) { idx--; render(); } });
+nextBtn.addEventListener('click', () => { if (idx < pages.length - 1) { idx++; render(); } });
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') prevBtn.click();
+  if (e.key === 'ArrowRight') nextBtn.click();
+});
+
+render();
+</script>
 </body>
 </html>
