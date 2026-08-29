@@ -43,6 +43,20 @@
   footer { text-align: center; font-size: .78rem; color: var(--muted-paper); line-height: 1.7; }
   footer a { color: var(--brass-bright); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .reader { display: flex; flex-direction: column; gap: 1.2rem; }
+  .leaf[hidden] { display: none; }
+  .leaf.leaf-anim { animation: leafIn .4s ease; }
+  @keyframes leafIn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+  .reader-nav { display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
+  .reader-btn {
+    font-family: "IBM Plex Mono", monospace; font-size: .8rem; letter-spacing: .02em;
+    background: rgba(200,154,76,.14); color: var(--brass-bright); border: 1px solid var(--hairline);
+    border-radius: 999px; padding: .55rem 1.2rem; cursor: pointer;
+  }
+  .reader-btn:disabled { opacity: .35; cursor: default; }
+  .reader-btn:hover:not(:disabled), .reader-btn:focus-visible:not(:disabled) { background: rgba(200,154,76,.3); }
+  .reader-counter { font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--muted-paper); min-width: 3.6rem; text-align: center; }
 </style>
 </head>
 <body>
@@ -59,7 +73,8 @@
     </div>
   </header>
 
-  <article class="page">
+  <div class="reader">
+  <article class="page" id="pageContent">
     <p>매달 초, 우체통에 초록색 카드가 하나 들어 있다. "꿈나무카드"라고 적힌 그 카드로 나는 한 달 동안 편의점이나 몇몇 식당에서 밥을 먹을 수 있다. 아빠가 일용직이라 어떤 달은 일이 있고 어떤 달은 없다. 일이 없는 달엔 특히 이 카드가 우리 집에서 제일 중요한 물건이 된다.</p>
     <p>카드를 쓸 수 있는 곳은 정해져 있다. 편의점 몇 군데, 분식집 두 곳. 그마저도 어떤 편의점은 안 되고, 어떤 편의점은 된다. 나는 그 목록을 다 외우고 있다. 처음 갔던 어떤 식당에서는 카드를 내밀었더니 사장님이 "이거 우리 집은 안 되는데" 하고 말해서, 나는 사람들 다 보는 앞에서 다시 카드를 집어넣고 나와야 했다. 그날 이후로 나는 확실하지 않은 곳에는 아예 들어가지 않는다. 그리고 사람이 많은 시간도 피한다. 특히 같은 학교 애들이 몰려 있을 만한 하교 시간 직후는 되도록 피해서, 애들이 다 빠져나간 뒤에야 편의점에 들어가곤 했다.</p>
     <p>아빠는 새벽마다 인력사무소 앞으로 나간다. 거기서 그날 일이 걸리면 나가고, 못 걸리면 그냥 집으로 돌아온다. 일이 없는 날 아빠가 일찍 들어오면, 나는 오히려 마음이 무거워졌다. 아빠는 그런 날이면 꼭 미안한 얼굴로 냉장고를 열어보고는 별거 없다는 듯 다시 닫았다.</p>
@@ -127,11 +142,81 @@
     <p>한번은 아빠가 내가 민서랑 편의점에서 찍은 사진을 우연히 보고 물었다. "이 친구가 그 짝꿍이야?" 나는 그렇다고 하면서, 처음으로 아빠한테 민서 얘기를 조금 들려줬다. 아빠는 다행이라는 듯 웃었다.</p>
     <p>가을이 되고 아빠 일도 조금씩 늘었다. 그래도 카드는 여전히 우체통에 꽂힌다. 나는 이제 그걸 봐도 예전처럼 마음이 무겁지 않다. 그냥, 이달에도 민서랑 편의점 갈 핑계가 하나 더 생겼다고 생각하기로 했다. 참치마요 하나, 전주비빔 하나. 우리는 여전히 그렇게 반씩 나눠 먹는다.</p>
   </article>
+  <div class="reader-nav" id="readerNav" hidden>
+    <button type="button" class="reader-btn" id="readerPrev">← 이전 페이지</button>
+    <span class="reader-counter" id="readerCounter" aria-live="polite"></span>
+    <button type="button" class="reader-btn" id="readerNext">다음 페이지 →</button>
+  </div>
+</div>
 
   <footer>
     이 작품은 삽화 없이 글로만 완성됐어요.
   </footer>
 
 </div>
+
+<script>
+(function () {
+  var container = document.getElementById('pageContent');
+  if (!container) return;
+  var children = Array.prototype.slice.call(container.children);
+  if (!children.length) return;
+  var leaves = [];
+  var chunk = [];
+  var chunkLen = 0;
+  children.forEach(function (el) {
+    chunk.push(el);
+    chunkLen += (el.textContent || '').length;
+    if (chunkLen > 620) { leaves.push(chunk); chunk = []; chunkLen = 0; }
+  });
+  if (chunk.length) leaves.push(chunk);
+  if (leaves.length <= 1) return;
+
+  container.innerHTML = '';
+  var leafEls = leaves.map(function (group, i) {
+    var div = document.createElement('div');
+    div.className = 'leaf';
+    group.forEach(function (el) { div.appendChild(el); });
+    if (i !== 0) div.hidden = true;
+    container.appendChild(div);
+    return div;
+  });
+
+  var current = 0;
+  var nav = document.getElementById('readerNav');
+  var counter = document.getElementById('readerCounter');
+  var prevBtn = document.getElementById('readerPrev');
+  var nextBtn = document.getElementById('readerNext');
+  nav.hidden = false;
+
+  function render() {
+    leafEls.forEach(function (el, i) { el.hidden = i !== current; });
+    leafEls[current].classList.remove('leaf-anim');
+    void leafEls[current].offsetWidth;
+    leafEls[current].classList.add('leaf-anim');
+    counter.textContent = (current + 1) + ' / ' + leafEls.length;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === leafEls.length - 1;
+    var top = container.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
+  nextBtn.addEventListener('click', function () { if (current < leafEls.length - 1) { current++; render(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextBtn.click();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+  });
+  var touchX = null;
+  container.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; });
+  container.addEventListener('touchend', function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (dx < -40) nextBtn.click();
+    if (dx > 40) prevBtn.click();
+    touchX = null;
+  });
+  render();
+})();
+</script>
 </body>
 </html>

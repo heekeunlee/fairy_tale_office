@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=Noto+Sans+KR:wght@400;500;700&family=Noto+Serif+KR:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
 <style>
   @media (prefers-reduced-motion: reduce) {
     * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
@@ -50,9 +51,59 @@
   .headline { font-weight: 700; font-size: .96rem; line-height: 1.5; display: block; }
   .headline.idle { font-weight: 500; font-style: italic; color: #8A7A5C; }
   .headline-detail { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: #6B5A3F; line-height: 1.6; margin: .3rem 0 0; }
+  .week-summary {
+    font-family: "Gowun Batang", serif; text-align: center; font-size: 1.02rem; line-height: 1.7;
+    color: var(--paper-ink); margin: 0; padding: 1.2rem 1.4rem; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
+  }
   footer { text-align: center; font-size: .78rem; color: var(--muted-paper); line-height: 1.7; }
   footer a { color: var(--brass-bright); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .slides-toggle {
+    align-self: center; display: inline-flex; align-items: center; gap: .5rem;
+    font-family: "IBM Plex Mono", monospace; font-size: .78rem; letter-spacing: .03em;
+    background: rgba(200,154,76,.16); color: var(--brass-bright); border: 1px solid var(--hairline);
+    border-radius: 999px; padding: .55rem 1.2rem; cursor: pointer;
+  }
+  .slides-toggle:hover, .slides-toggle:focus-visible { background: rgba(200,154,76,.3); }
+
+  #revealDeck { display: none; position: fixed; inset: 0; z-index: 999; background: var(--wood-deep); }
+  #revealDeck.open { display: block; }
+  #revealDeck.reveal {
+    --r-background-color: var(--wood-deep);
+    --r-main-font: "Noto Sans KR", sans-serif;
+    --r-main-color: var(--ink);
+    --r-heading-font: "Gowun Batang", serif;
+    --r-heading-color: var(--ink);
+    --r-link-color: var(--brass);
+  }
+  #revealDeck .slides section {
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-soft) 100%);
+    color: var(--ink); border-radius: 1.4rem; padding: clamp(2rem, 5vw, 3.5rem);
+    box-shadow: 0 2rem 4rem -1.5rem rgba(0,0,0,.7);
+  }
+  .rv-eyebrow { font-family: "IBM Plex Mono", monospace; letter-spacing: .3em; text-transform: uppercase; font-size: .78rem; color: var(--brass); text-align: center; margin: 0 0 .8rem; }
+  .rv-title { font-family: "Gowun Batang", serif; font-size: clamp(1.8rem, 4vw, 2.6rem); text-align: center; margin: 0 0 1rem; }
+  .rv-sub { text-align: center; color: #6B5A3F; font-size: 1.05rem; max-width: 32rem; margin: 0 auto; line-height: 1.7; }
+  .rv-person { display: flex; gap: 2.2rem; align-items: center; }
+  .rv-avatar { width: clamp(5rem, 12vw, 8rem); height: clamp(5rem, 12vw, 8rem); border-radius: 50%; object-fit: cover; border: 4px solid var(--brass); flex: none; }
+  .rv-name { font-family: "Gowun Batang", serif; font-weight: 700; font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 0 0 1rem; }
+  .rv-role { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: #6B5A3F; margin-left: .6rem; font-weight: 400; }
+  .rv-headlines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .9rem; }
+  .rv-h { border-left: 3px solid var(--brass); padding-left: 1.1rem; font-weight: 700; font-size: clamp(1rem, 2.4vw, 1.25rem); }
+  .rv-h.idle { font-style: italic; font-weight: 500; color: #8A7A5C; border-color: var(--muted-paper); }
+  .rv-h small { display: block; font-family: "IBM Plex Mono", monospace; font-size: .78rem; color: #6B5A3F; font-weight: 400; margin-top: .35rem; }
+  .rv-closing { text-align: center; font-family: "Gowun Batang", serif; font-size: clamp(1.2rem, 3vw, 1.6rem); max-width: 36rem; margin: 0 auto; line-height: 1.7; }
+  .slide-close {
+    position: fixed; top: 1.1rem; right: 1.3rem; z-index: 1000;
+    width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--hairline);
+    background: rgba(0,0,0,.4); color: var(--paper-ink); font-size: 1.15rem; cursor: pointer;
+  }
+  .slide-close:hover { background: rgba(0,0,0,.6); }
+  @media (max-width: 640px) {
+    .rv-person { flex-direction: column; text-align: center; }
+    .rv-headlines { text-align: left; }
+  }
 </style>
 </head>
 <body>
@@ -64,6 +115,7 @@
     <p class="eyebrow mono">WEEKLY REPORT · 2026-08-30</p>
     <h1>2026년 8월 30일 주간보고</h1>
     <p class="sub">공방이 문을 연 첫 주(8/27~8/30)의 기록. 아직 다음 보고가 없어 이번 한 번은 개업 이후 전체 활동을 담았고, 다음 주부터는 실제 지난 7일치만 기록합니다. 없는 일을 지어내지 않습니다.</p>
+    <button type="button" class="slides-toggle" id="openSlides">🎬 슬라이드로 보기</button>
   </header>
 
   <div class="staff-card">
@@ -155,11 +207,99 @@
     </div>
   </div>
 
+  <p class="week-summary" id="weekSummary">이번 주 총평 — 공모전용 단편 3편, 기획부터 자문까지 하루 만에 완주. 삽화·마케팅 카피·저작권 점검은 다음 주 과제로 남음.</p>
+
   <footer>
     <p>기획·심사·자문은 실제로 판단이 필요한 일이라 오퍼스 모델을 쓰고, 나머지는 기본 모델(소넷)로 돌아간다. 하지만 8명 모두 결국 하나의 Claude가 역할을 나눠 맡은 것이다 — 이 사실을 숨기지 않는다.</p>
     <p><a href="../index.html">← 동화 공방으로 돌아가기</a></p>
   </footer>
 
 </div>
+
+<div id="revealDeck" class="reveal">
+  <button type="button" class="slide-close" id="closeSlides" aria-label="슬라이드 닫기">✕</button>
+  <div class="slides"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+<script>
+(function () {
+  var deckEl = document.getElementById('revealDeck');
+  var slidesEl = deckEl.querySelector('.slides');
+  var revealInstance = null;
+
+  function buildSlides() {
+    if (slidesEl.dataset.built) return;
+    var frag = document.createDocumentFragment();
+
+    var titleSlide = document.createElement('section');
+    titleSlide.innerHTML =
+      '<p class="rv-eyebrow">' + (document.querySelector('.eyebrow').textContent || '') + '</p>' +
+      '<h1 class="rv-title">' + document.querySelector('h1').textContent + '</h1>' +
+      '<p class="rv-sub">' + document.querySelector('.book-header .sub').textContent + '</p>';
+    frag.appendChild(titleSlide);
+
+    document.querySelectorAll('.staff-card').forEach(function (card) {
+      var img = card.querySelector('img').getAttribute('src');
+      var nameEl = card.querySelector('.staff-name');
+      var role = nameEl.querySelector('.staff-role').textContent;
+      var name = nameEl.childNodes[0].textContent.trim();
+      var items = Array.prototype.map.call(card.querySelectorAll('.headlines > li'), function (li) {
+        var idle = li.classList.contains('idle') ? ' idle' : '';
+        var headline = li.querySelector('.headline').textContent;
+        var detail = li.querySelector('.headline-detail');
+        return '<li class="rv-h' + idle + '"><span>' + headline + '</span>' +
+          (detail ? '<small>' + detail.textContent + '</small>' : '') + '</li>';
+      }).join('');
+      var section = document.createElement('section');
+      section.innerHTML =
+        '<div class="rv-person">' +
+          '<img class="rv-avatar" src="' + img + '" alt="' + name + '">' +
+          '<div><p class="rv-name">' + name + '<span class="rv-role">' + role + '</span></p>' +
+          '<ul class="rv-headlines">' + items + '</ul></div>' +
+        '</div>';
+      frag.appendChild(section);
+    });
+
+    var summaryEl = document.getElementById('weekSummary');
+    if (summaryEl) {
+      var closing = document.createElement('section');
+      closing.innerHTML = '<p class="rv-eyebrow">SUMMARY</p><p class="rv-closing">' + summaryEl.textContent + '</p>';
+      frag.appendChild(closing);
+    }
+
+    slidesEl.appendChild(frag);
+    slidesEl.dataset.built = '1';
+  }
+
+  function openSlides() {
+    buildSlides();
+    deckEl.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    if (!revealInstance) {
+      revealInstance = new Reveal(deckEl, {
+        embedded: false, controls: true, progress: true, slideNumber: true,
+        keyboard: true, hash: false, transition: 'slide', width: 1100, height: 700, margin: 0.08
+      });
+      revealInstance.initialize();
+    } else {
+      revealInstance.layout();
+    }
+  }
+
+  function closeSlides() {
+    deckEl.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('openSlides').addEventListener('click', openSlides);
+  document.getElementById('closeSlides').addEventListener('click', closeSlides);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && deckEl.classList.contains('open')) closeSlides();
+  });
+
+  if (location.hash === '#slides') openSlides();
+})();
+</script>
 </body>
 </html>

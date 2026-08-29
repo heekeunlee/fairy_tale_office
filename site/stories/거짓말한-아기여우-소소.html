@@ -43,6 +43,20 @@
   footer { text-align: center; font-size: .78rem; color: var(--muted-paper); line-height: 1.7; }
   footer a { color: var(--brass-bright); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .reader { display: flex; flex-direction: column; gap: 1.2rem; }
+  .leaf[hidden] { display: none; }
+  .leaf.leaf-anim { animation: leafIn .4s ease; }
+  @keyframes leafIn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+  .reader-nav { display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
+  .reader-btn {
+    font-family: "IBM Plex Mono", monospace; font-size: .8rem; letter-spacing: .02em;
+    background: rgba(200,154,76,.14); color: var(--brass-bright); border: 1px solid var(--hairline);
+    border-radius: 999px; padding: .55rem 1.2rem; cursor: pointer;
+  }
+  .reader-btn:disabled { opacity: .35; cursor: default; }
+  .reader-btn:hover:not(:disabled), .reader-btn:focus-visible:not(:disabled) { background: rgba(200,154,76,.3); }
+  .reader-counter { font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--muted-paper); min-width: 3.6rem; text-align: center; }
 </style>
 </head>
 <body>
@@ -60,7 +74,8 @@
     </div>
   </header>
 
-  <article class="page">
+  <div class="reader">
+  <article class="page" id="pageContent">
     <p>두리네 집 처마 밑에는 할머니가 만들어준 나뭇잎 모빌이 걸려 있었어요. 바람이 불 때마다 파닥파닥, 마른 나뭇잎들이 노래하듯 흔들렸어요. 두리가 세상에서 제일 아끼는 물건이었어요.</p>
     <p>소소는 두리네 집에서 놀다가, 공을 던진다는 게 그만 모빌을 툭 건드리고 말았어요.<br>파사삭. 모빌이 바닥에 떨어져 나뭇잎이 우수수 흩어졌어요.</p>
     <p>멀리서 두리가 돌아오는 발소리가 들렸어요. 소소는 심장이 콩닥콩닥 뛰었어요.<br>"어, 어떡하지..."<br>소소는 아무 말도 못 하고 살금살금 뒷문으로 도망쳐 버렸어요.</p>
@@ -72,11 +87,81 @@
     <p>그날 오후, 소소와 두리는 마당에 나란히 앉아 떨어진 나뭇잎을 하나하나 다시 엮었어요.<br>바스락, 바스락. 둘이 함께 만드니 생각보다 금방 끝났어요.</p>
     <p>그날 밤, 소소는 이불 속에서 뒤척이지 않았어요.<br>마음이 깃털처럼 가벼워서, 소소는 아주 푹 잤어요.</p>
   </article>
+  <div class="reader-nav" id="readerNav" hidden>
+    <button type="button" class="reader-btn" id="readerPrev">← 이전 페이지</button>
+    <span class="reader-counter" id="readerCounter" aria-live="polite"></span>
+    <button type="button" class="reader-btn" id="readerNext">다음 페이지 →</button>
+  </div>
+</div>
 
   <footer>
     이 작품은 아직 글만 완성됐어요. 북디자이너 정다은의 삽화 작업을 기다리는 중입니다.
   </footer>
 
 </div>
+
+<script>
+(function () {
+  var container = document.getElementById('pageContent');
+  if (!container) return;
+  var children = Array.prototype.slice.call(container.children);
+  if (!children.length) return;
+  var leaves = [];
+  var chunk = [];
+  var chunkLen = 0;
+  children.forEach(function (el) {
+    chunk.push(el);
+    chunkLen += (el.textContent || '').length;
+    if (chunkLen > 620) { leaves.push(chunk); chunk = []; chunkLen = 0; }
+  });
+  if (chunk.length) leaves.push(chunk);
+  if (leaves.length <= 1) return;
+
+  container.innerHTML = '';
+  var leafEls = leaves.map(function (group, i) {
+    var div = document.createElement('div');
+    div.className = 'leaf';
+    group.forEach(function (el) { div.appendChild(el); });
+    if (i !== 0) div.hidden = true;
+    container.appendChild(div);
+    return div;
+  });
+
+  var current = 0;
+  var nav = document.getElementById('readerNav');
+  var counter = document.getElementById('readerCounter');
+  var prevBtn = document.getElementById('readerPrev');
+  var nextBtn = document.getElementById('readerNext');
+  nav.hidden = false;
+
+  function render() {
+    leafEls.forEach(function (el, i) { el.hidden = i !== current; });
+    leafEls[current].classList.remove('leaf-anim');
+    void leafEls[current].offsetWidth;
+    leafEls[current].classList.add('leaf-anim');
+    counter.textContent = (current + 1) + ' / ' + leafEls.length;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === leafEls.length - 1;
+    var top = container.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
+  nextBtn.addEventListener('click', function () { if (current < leafEls.length - 1) { current++; render(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextBtn.click();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+  });
+  var touchX = null;
+  container.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; });
+  container.addEventListener('touchend', function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (dx < -40) nextBtn.click();
+    if (dx > 40) prevBtn.click();
+    touchX = null;
+  });
+  render();
+})();
+</script>
 </body>
 </html>

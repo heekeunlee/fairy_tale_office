@@ -43,6 +43,20 @@
   footer { text-align: center; font-size: .78rem; color: var(--muted-paper); line-height: 1.7; }
   footer a { color: var(--brass-bright); text-decoration: none; }
   footer a:hover { text-decoration: underline; }
+
+  .reader { display: flex; flex-direction: column; gap: 1.2rem; }
+  .leaf[hidden] { display: none; }
+  .leaf.leaf-anim { animation: leafIn .4s ease; }
+  @keyframes leafIn { from { opacity: 0; transform: translateX(28px); } to { opacity: 1; transform: translateX(0); } }
+  .reader-nav { display: flex; align-items: center; justify-content: center; gap: 1.2rem; }
+  .reader-btn {
+    font-family: "IBM Plex Mono", monospace; font-size: .8rem; letter-spacing: .02em;
+    background: rgba(200,154,76,.14); color: var(--brass-bright); border: 1px solid var(--hairline);
+    border-radius: 999px; padding: .55rem 1.2rem; cursor: pointer;
+  }
+  .reader-btn:disabled { opacity: .35; cursor: default; }
+  .reader-btn:hover:not(:disabled), .reader-btn:focus-visible:not(:disabled) { background: rgba(200,154,76,.3); }
+  .reader-counter { font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--muted-paper); min-width: 3.6rem; text-align: center; }
 </style>
 </head>
 <body>
@@ -59,7 +73,8 @@
     </div>
   </header>
 
-  <article class="page">
+  <div class="reader">
+  <article class="page" id="pageContent">
     <p>학교 종이 치면 나는 늘 제일 먼저 뛰어나간다. 친구들은 내가 급식실 앞자리를 맡으려고 그러는 줄 안다. 사실은 4시까지 집에 가야 하기 때문이다. 4시가 넘으면 태오가 어린이집 차에서 내리고, 그때 집에 아무도 없으면 안 된다.</p>
     <p>태오는 내 동생이다. 일곱 살이고, 말을 거의 하지 않는다. 자폐가 있다고 했다. 정확히 그게 뭔지는 나도 잘 모르지만, 태오한테는 정해진 순서라는 게 있다는 것만은 안다. 신발은 오른쪽부터, 물컵은 항상 같은 자리, 저녁은 6시 정각. 그 순서 중 하나라도 틀어지면 태오는 세상이 끝난 것처럼 운다.</p>
     <p>아침도 마찬가지다. 태오는 매일 같은 순서로 일어난다. 이불을 정확히 세 번 접고, 양말을 왼쪽부터 신고, 현관에서 신발을 신기 전엔 꼭 창밖을 한 번 본다. 그 순서 중 하나라도 건너뛰면 처음부터 다시 시작해야 한다. 그래서 아침마다 나는 태오보다 십 분은 더 일찍 일어난다.</p>
@@ -107,11 +122,81 @@
     <p>태오는 대답하지 않는다. 그냥 다시 한번, 손을 흔든다. 그거면 충분하다.</p>
     <p>물론 여전히 힘든 날도 있다. 태오가 갑자기 울음을 터뜨리는 날이면 나도 같이 지치고, 가끔은 여전히 소민이랑 못 노는 날도 있다. 그래도 이제는 그런 날, 소민이한테 그냥 "오늘 힘들었어"라고 말할 수 있다. 그거 하나만으로도, 예전보다 훨씬 덜 외롭다.</p>
   </article>
+  <div class="reader-nav" id="readerNav" hidden>
+    <button type="button" class="reader-btn" id="readerPrev">← 이전 페이지</button>
+    <span class="reader-counter" id="readerCounter" aria-live="polite"></span>
+    <button type="button" class="reader-btn" id="readerNext">다음 페이지 →</button>
+  </div>
+</div>
 
   <footer>
     이 작품은 삽화 없이 글로만 완성됐어요.
   </footer>
 
 </div>
+
+<script>
+(function () {
+  var container = document.getElementById('pageContent');
+  if (!container) return;
+  var children = Array.prototype.slice.call(container.children);
+  if (!children.length) return;
+  var leaves = [];
+  var chunk = [];
+  var chunkLen = 0;
+  children.forEach(function (el) {
+    chunk.push(el);
+    chunkLen += (el.textContent || '').length;
+    if (chunkLen > 620) { leaves.push(chunk); chunk = []; chunkLen = 0; }
+  });
+  if (chunk.length) leaves.push(chunk);
+  if (leaves.length <= 1) return;
+
+  container.innerHTML = '';
+  var leafEls = leaves.map(function (group, i) {
+    var div = document.createElement('div');
+    div.className = 'leaf';
+    group.forEach(function (el) { div.appendChild(el); });
+    if (i !== 0) div.hidden = true;
+    container.appendChild(div);
+    return div;
+  });
+
+  var current = 0;
+  var nav = document.getElementById('readerNav');
+  var counter = document.getElementById('readerCounter');
+  var prevBtn = document.getElementById('readerPrev');
+  var nextBtn = document.getElementById('readerNext');
+  nav.hidden = false;
+
+  function render() {
+    leafEls.forEach(function (el, i) { el.hidden = i !== current; });
+    leafEls[current].classList.remove('leaf-anim');
+    void leafEls[current].offsetWidth;
+    leafEls[current].classList.add('leaf-anim');
+    counter.textContent = (current + 1) + ' / ' + leafEls.length;
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === leafEls.length - 1;
+    var top = container.getBoundingClientRect().top + window.scrollY - 90;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+  }
+  prevBtn.addEventListener('click', function () { if (current > 0) { current--; render(); } });
+  nextBtn.addEventListener('click', function () { if (current < leafEls.length - 1) { current++; render(); } });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'ArrowRight') nextBtn.click();
+    if (e.key === 'ArrowLeft') prevBtn.click();
+  });
+  var touchX = null;
+  container.addEventListener('touchstart', function (e) { touchX = e.touches[0].clientX; });
+  container.addEventListener('touchend', function (e) {
+    if (touchX === null) return;
+    var dx = e.changedTouches[0].clientX - touchX;
+    if (dx < -40) nextBtn.click();
+    if (dx > 40) prevBtn.click();
+    touchX = null;
+  });
+  render();
+})();
+</script>
 </body>
 </html>
