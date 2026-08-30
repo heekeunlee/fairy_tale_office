@@ -220,6 +220,7 @@
   .personnel-name { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.3rem; }
   .personnel-en { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: #6B5A3F; }
   .personnel-role { font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--signal); margin-top: .1rem; }
+  .personnel-engine { font-family: "IBM Plex Mono", monospace; font-size: .66rem; color: #6B5A3F; margin-top: .2rem; }
   .personnel-eyebrow { font-family: "IBM Plex Mono", monospace; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--brass); text-align: center; margin: 0 0 -.6rem; }
   .personnel-field { display: flex; flex-direction: column; gap: .4rem; }
   .personnel-field .label {
@@ -706,6 +707,7 @@
         <span class="personnel-name" id="personnelName"></span>
         <span class="personnel-en" id="personnelEn"></span>
         <span class="personnel-role" id="personnelRole"></span>
+        <span class="personnel-engine" id="personnelEngine"></span>
       </div>
     </div>
     <div class="personnel-field">
@@ -760,59 +762,91 @@
   var PERSONNEL = {
     planner: {
       name: '이소진', en: 'Isabella Lee', role: '기획 담당 · 기획실', photo: 'images/planner.jpg',
+      engine: '모델: 오퍼스 · 도구: Read · Write · Glob · Grep',
       edu: ['국어국문학과 졸업', '대학원 아동청소년문학 전공 수료'],
-      career: ['그림책 출판사 편집자 6년', '지역 도서관 독서모임 진행자 3년'],
+      career: [
+        '기획서 쓰기 전 planning/ 전체를 훑어 소재·교훈 중복부터 확인',
+        '로그라인·타겟 연령·등장인물·5~8비트 줄거리까지, 작가가 바로 쓸 수 있는 수준으로 명세'
+      ],
       hobby: '헌책방 순례, 오래된 그림책 수집',
-      specialty: '표지만 보고 대상 연령 맞히기'
+      specialty: '교훈을 대사로 직접 설명하지 않고 장면과 감정선으로 설계하기'
     },
     writer: {
       name: '최민우', en: 'Noah Choi', role: '집필 담당 · 집필실', photo: 'images/writer.jpg',
+      engine: '모델: 소넷(기본) · 도구: Read · Write · Glob',
       edu: ['문예창작학과 졸업'],
-      career: ['동화 공모전 신인상 수상', '어린이 잡지 단편 연재 2년'],
+      career: [
+        '집필 전 이전 초고·심사 피드백을 먼저 읽고 반영하는 원칙 고수',
+        '대상 연령대별로 문장 길이·어휘 수준을 구분해 집필 (유아: 반복구·의성어 / 어린이: 대화 중심)'
+      ],
       hobby: '밤 산책하며 대사 중얼거리기',
-      specialty: '초고를 소리 내어 읽으며 리듬 다듬기'
+      specialty: '교훈을 사건과 행동으로만 드러내고 결말에서 설교하지 않기'
     },
     critic: {
       name: '박미란', en: 'Dr. Miran Park', role: '심사 담당 · 심사실', photo: 'images/critic.jpg',
+      engine: '모델: 오퍼스 · 도구: Read · Write · Glob',
       edu: ['아동문학 박사'],
-      career: ['아동청소년문학상 심사위원', '대학 아동문학 강의 8년'],
+      career: [
+        '연령 적합성·구성·문체·메시지 전달력·독창성 5개 기준으로 심사',
+        '판정은 통과 / 수정 필요 / 전면 재기획 필요 중 하나로만 명확히'
+      ],
       hobby: '지난 심사평 다시 읽어보기',
-      specialty: '첫 문단만 보고 결말의 진부함 예측하기'
+      specialty: '"더 재미있게" 대신 "3번째 장면에 갈등을 한 단계 추가하라"는 식의 실행 가능한 지적'
     },
     designer: {
       name: '정다은', en: 'Dawn Jung', role: '디자인 담당 · 디자인실', photo: 'images/designer.jpg',
+      engine: '모델: 소넷(기본) · 도구: Read · Write · Glob · Bash',
       edu: ['시각디자인과 졸업'],
-      career: ['동화책 삽화 작업 8권', '그림책 원화 전시 참여 2회'],
+      career: [
+        '반딧불이 콩콩이의 SVG 스프라이트 방식을 새 작품에도 일관되게 적용',
+        '"삽화 준비 중" 작품을 한 번에 다 하지 않고 한 편씩 완료해 커밋'
+      ],
       hobby: '색연필 드로잉, 미술관 나들이',
-      specialty: '여백만으로 감정 표현하기'
+      specialty: '실사 인물 사진처럼 없는 능력은 있는 척하지 않고, 참고 이미지 요청이나 일러스트로 대체하기'
     },
     researcher: {
       name: '남도윤', en: 'Dylan Nam', role: '리서치 담당 · 자료실', photo: 'images/researcher.jpg',
+      engine: '모델: 소넷(기본) · 도구: WebSearch · WebFetch · Read · Write · Glob',
       edu: ['미디어커뮤니케이션 전공'],
-      career: ['출판 트렌드 뉴스레터 운영', '독립서점 MD 경험'],
+      career: [
+        '소재 트렌드 조사와 저작권·유사성 주간 점검, 두 업무를 겸함',
+        '리스크는 낮음/중간/높음으로만 판정, "확인 못함"은 지어내지 않고 그대로 표시'
+      ],
       hobby: '신간 코너 훑어보기',
-      specialty: '비슷한 소재의 기존작 빠르게 찾아내기'
+      specialty: '리스크 "높음"이 나오면 스스로 결론 내지 않고 실제 법률 자문을 받으라고 권고하기'
     },
     marketer: {
       name: '백하늘', en: 'Skye Baek', role: '마케팅 담당 · 홍보실', photo: 'images/marketer.jpg',
+      engine: '모델: 소넷(기본) · 도구: Read · Write · Glob',
       edu: ['광고홍보학과 졸업'],
-      career: ['어린이 콘텐츠 브랜드 마케팅 4년', 'SNS 채널 기획·운영'],
+      career: [
+        '통과작마다 한 줄 후크·홍보 문단·추천 대상을 marketing/{제목슬러그}.md로 정리',
+        '승인된 범위 안에서는 서재 항목에 후크를 직접 반영'
+      ],
       hobby: '좋은 카피 모아두기',
-      specialty: '교훈 대사 없이 한 줄로 눈물샘 자극하기'
+      specialty: '결말 스포일러 없이, 과장 없이 쓰기 — 안 우는 결말에 "눈물 폭탄" 같은 말 안 씀'
     },
     admin: {
       name: '조단비', en: 'Danbi Cho', role: '총무 담당 · 사무실', photo: 'images/admin.jpg',
+      engine: '모델: 소넷(기본) · 도구: Read · Write · Glob · Grep · Bash',
       edu: ['경영학과 졸업'],
-      career: ['출판사 제작 진행 관리(PM) 5년'],
+      career: [
+        '기획서-초고-심사 정합성과 파일 명명 규칙 위반을 점검',
+        '오피스 크루 스탯·서재 목록이 실제 완결작 수와 일치하는지 대조'
+      ],
       hobby: '체크리스트 만들기',
-      specialty: '숫자 안 맞는 곳 바로 찾아내기'
+      specialty: '오타처럼 명백한 건 직접 고치고, "서재에 올릴지" 같은 판단은 사람 몫으로 넘기기'
     },
     advisor: {
       name: '강수연', en: 'Sue Kang', role: '고문 (아동문학가) · 자문실', photo: 'images/advisor.jpg',
+      engine: '모델: 오퍼스 · 도구: Read · Write · Glob',
       edu: ['아동문학 전공', '아동심리상담사 자격 이수'],
-      career: ['아동문학가 등단', '아동심리상담소 자문위원'],
+      career: [
+        '문학적 완성도·아동 심리 발달·인문학적 함의·완결성, 네 관점에서 재검토',
+        '심사위원과 다른 질문에 답함 — "기획대로 잘 만들었는가"가 아니라 "좋은 문학이고 아이에게 좋은가"'
+      ],
       hobby: '아이들 인터뷰하며 진짜 생각 듣기',
-      specialty: '"착한 결말"과 "진짜인 결말" 구분하기'
+      specialty: '트집을 위한 트집은 잡지 않고, 종합 의견을 "이대로 좋음/보완 권장/재검토 필요"로만 냄'
     }
   };
 
@@ -837,6 +871,7 @@
     document.getElementById('personnelName').textContent = p.name;
     document.getElementById('personnelEn').textContent = p.en;
     document.getElementById('personnelRole').textContent = p.role;
+    document.getElementById('personnelEngine').textContent = p.engine;
     fillList(document.getElementById('personnelEdu'), p.edu);
     fillList(document.getElementById('personnelCareer'), p.career);
     document.getElementById('personnelHobby').textContent = p.hobby;
