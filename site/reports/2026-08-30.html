@@ -18,7 +18,7 @@
     --wood-deep: #241C17; --wood: #332620; --wood-light: #4B392C;
     --parchment: #F3E7CB; --parchment-soft: #E7D8B4;
     --brass: #C89A4C; --brass-bright: #E7BE79;
-    --ink: #241A10; --paper-ink: #F6ECD9; --muted-paper: #C7B394;
+    --ink: #241A10; --paper-ink: #F6ECD9; --muted-paper: #C7B394; --signal: #C97A5C;
     --hairline: rgba(243, 231, 203, 0.16);
   }
   * { box-sizing: border-box; }
@@ -51,6 +51,12 @@
   .headline { font-weight: 700; font-size: .96rem; line-height: 1.5; display: block; }
   .headline.idle { font-weight: 500; font-style: italic; color: #8A7A5C; }
   .headline-detail { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: #6B5A3F; line-height: 1.6; margin: .3rem 0 0; }
+  .staff-reflect {
+    font-family: "Gowun Batang", serif; font-style: italic; font-size: .88rem; line-height: 1.7;
+    color: #4A3B26; margin: .2rem 0 0; padding-left: .85rem; border-left: 2px dashed var(--brass-bright);
+  }
+  .staff-next { font-family: "Noto Sans KR", sans-serif; font-size: .82rem; line-height: 1.6; color: #4A3B26; margin: 0; }
+  .next-label { font-family: "IBM Plex Mono", monospace; font-size: .66rem; letter-spacing: .04em; color: var(--signal); margin-right: .4rem; }
   .week-summary {
     font-family: "Gowun Batang", serif; text-align: center; font-size: 1.02rem; line-height: 1.7;
     color: var(--paper-ink); margin: 0; padding: 1.2rem 1.4rem; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline);
@@ -72,37 +78,63 @@
   #revealDeck.reveal {
     --r-background-color: var(--wood-deep);
     --r-main-font: "Noto Sans KR", sans-serif;
-    --r-main-color: var(--ink);
+    --r-main-color: var(--paper-ink);
     --r-heading-font: "Gowun Batang", serif;
-    --r-heading-color: var(--ink);
+    --r-heading-color: var(--paper-ink);
     --r-link-color: var(--brass);
   }
+  /* Steve Jobs 키노트 스타일: 슬라이드마다 큰 화면을 꽉 채우는 단 하나의 메시지, 카드/여백 없는 풀블리드 배경 */
   #revealDeck .slides section {
-    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-soft) 100%);
-    color: var(--ink); border-radius: 1.4rem; padding: clamp(2rem, 5vw, 3.5rem);
-    box-shadow: 0 2rem 4rem -1.5rem rgba(0,0,0,.7);
+    width: 100%; height: 100%; box-sizing: border-box;
+    display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+    gap: 1.6rem; padding: 3.5rem 5rem; text-align: center; position: relative;
+    background: radial-gradient(ellipse 75% 65% at 50% 28%, var(--wood-light), transparent 72%), var(--wood-deep);
+    color: var(--paper-ink);
   }
-  .rv-eyebrow { font-family: "IBM Plex Mono", monospace; letter-spacing: .3em; text-transform: uppercase; font-size: .78rem; color: var(--brass); text-align: center; margin: 0 0 .8rem; }
-  .rv-title { font-family: "Gowun Batang", serif; font-size: clamp(1.8rem, 4vw, 2.6rem); text-align: center; margin: 0 0 1rem; }
-  .rv-sub { text-align: center; color: #6B5A3F; font-size: 1.05rem; max-width: 32rem; margin: 0 auto; line-height: 1.7; }
-  .rv-person { display: flex; gap: 2.2rem; align-items: center; }
-  .rv-avatar { width: clamp(5rem, 12vw, 8rem); height: clamp(5rem, 12vw, 8rem); border-radius: 50%; object-fit: cover; border: 4px solid var(--brass); flex: none; }
-  .rv-name { font-family: "Gowun Batang", serif; font-weight: 700; font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 0 0 1rem; }
-  .rv-role { font-family: "IBM Plex Mono", monospace; font-size: .8rem; color: #6B5A3F; margin-left: .6rem; font-weight: 400; }
-  .rv-headlines { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .9rem; }
-  .rv-h { border-left: 3px solid var(--brass); padding-left: 1.1rem; font-weight: 700; font-size: clamp(1rem, 2.4vw, 1.25rem); }
-  .rv-h.idle { font-style: italic; font-weight: 500; color: #8A7A5C; border-color: var(--muted-paper); }
-  .rv-h small { display: block; font-family: "IBM Plex Mono", monospace; font-size: .78rem; color: #6B5A3F; font-weight: 400; margin-top: .35rem; }
-  .rv-closing { text-align: center; font-family: "Gowun Batang", serif; font-size: clamp(1.2rem, 3vw, 1.6rem); max-width: 36rem; margin: 0 auto; line-height: 1.7; }
+  .rv-chip {
+    position: absolute; top: 2.2rem; left: 3rem; display: flex; align-items: center; gap: .7rem;
+  }
+  .rv-chip img { width: 2.6rem; height: 2.6rem; border-radius: 50%; object-fit: cover; border: 2px solid var(--brass); }
+  .rv-chip .rv-chip-text { display: flex; flex-direction: column; align-items: flex-start; line-height: 1.3; }
+  .rv-chip .rv-chip-name { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1rem; }
+  .rv-chip .rv-chip-role { font-family: "IBM Plex Mono", monospace; font-size: .68rem; color: var(--muted-paper); letter-spacing: .03em; }
+
+  .rv-eyebrow { font-family: "IBM Plex Mono", monospace; letter-spacing: .32em; text-transform: uppercase; font-size: 1rem; color: var(--brass); margin: 0; }
+  .rv-eyebrow.rv-next-tag { color: var(--signal); }
+
+  .rv-title { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 4.2rem; line-height: 1.15; margin: 0; letter-spacing: -.01em; }
+  .rv-sub { color: var(--muted-paper); font-size: 1.35rem; max-width: 46rem; line-height: 1.6; margin: 0; }
+
+  .rv-avatar-big { width: 15rem; height: 15rem; border-radius: 50%; object-fit: cover; border: 6px solid var(--brass); }
+  .rv-name-big { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 3.6rem; margin: 0; }
+  .rv-role-big { font-family: "IBM Plex Mono", monospace; font-size: 1.15rem; color: var(--brass-bright); letter-spacing: .06em; margin: 0; }
+
+  .rv-h { font-weight: 700; font-size: 3.1rem; line-height: 1.3; max-width: 44rem; margin: 0; }
+  .rv-h.idle { font-style: italic; font-weight: 500; color: var(--muted-paper); }
+  .rv-h-detail { font-family: "IBM Plex Mono", monospace; font-size: 1.05rem; color: var(--brass-bright); font-weight: 400; margin: 0; }
+
+  .rv-quote { font-family: "Gowun Batang", serif; font-style: italic; font-size: 2.3rem; line-height: 1.6; max-width: 46rem; margin: 0; }
+  .rv-quote::before { content: open-quote; }
+  .rv-quote::after { content: close-quote; }
+
+  .rv-next-text { font-family: "Noto Sans KR", sans-serif; font-weight: 500; font-size: 2.5rem; line-height: 1.55; max-width: 44rem; margin: 0; }
+
+  .rv-closing { text-align: center; font-family: "Gowun Batang", serif; font-weight: 700; font-size: 3rem; max-width: 46rem; margin: 0; line-height: 1.5; }
+
   .slide-close {
     position: fixed; top: 1.1rem; right: 1.3rem; z-index: 1000;
     width: 2.6rem; height: 2.6rem; border-radius: 50%; border: 1px solid var(--hairline);
     background: rgba(0,0,0,.4); color: var(--paper-ink); font-size: 1.15rem; cursor: pointer;
   }
   .slide-close:hover { background: rgba(0,0,0,.6); }
+
   @media (max-width: 640px) {
-    .rv-person { flex-direction: column; text-align: center; }
-    .rv-headlines { text-align: left; }
+    .rv-title { font-size: 2.6rem; }
+    .rv-name-big { font-size: 2.4rem; }
+    .rv-avatar-big { width: 9rem; height: 9rem; }
+    .rv-h { font-size: 2rem; }
+    .rv-quote, .rv-next-text { font-size: 1.6rem; }
+    .rv-closing { font-size: 2rem; }
   }
 </style>
 </head>
@@ -126,6 +158,8 @@
         <li><span class="headline">기획서 10건 신규 작성</span><p class="headline-detail">planning/ 전체 · 그림책 7편 + 공모용 단편 3편</p></li>
         <li><span class="headline">창비 요강 맞춤 단편 3편, 로그라인 하루 완성</span><p class="headline-detail">「태오의 안녕」(영 케어러) · 「할머니의 종」(독거노인 고독사) · 「삼각김밥 두 개」(아동급식카드 낙인)</p></li>
       </ul>
+      <p class="staff-reflect">요강 길이에 맞춰 로그라인부터 결말 이미지까지 하루 만에 뽑아본 건 처음이다. 빠르게 쓰는 것과 깊이 파는 것 사이에서 살짝 불안했다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 심사 피드백이 개정을 요구하면 재기획, 아니면 다음 소재 발굴에 들어갈 예정.</p>
     </div>
   </div>
 
@@ -137,6 +171,8 @@
         <li><span class="headline">초고 10편 집필·개정 완료</span><p class="headline-detail">「반딧불이 콩콩이」v1→v2 · 그림책 4편 v1~v2 · 신작 단편 3편 v1</p></li>
         <li><span class="headline">분량 목표 미달, 매 원고 2~4차 보강</span><p class="headline-detail">목표 원고지 27~33매</p></li>
       </ul>
+      <p class="staff-reflect">세 편 다 무거운 소재라, 감정을 순화하지 않으면서도 초등학생이 읽을 수 있게 쓰는 게 매번 줄타기 같았다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 분량 하한에 걸린 두 편을 다시 들여다보고, 여유가 되면 개정판 대사를 다듬을 예정.</p>
     </div>
   </div>
 
@@ -148,6 +184,8 @@
         <li><span class="headline">완성작 10편 심사 완료</span></li>
         <li><span class="headline">신작 단편 3편, 1심 전원 통과</span><p class="headline-detail">분량 27~28매 — 요강(27~33매) 하한권</p></li>
       </ul>
+      <p class="staff-reflect">세 편 모두 1심에 통과시켰지만, 분량이 다들 하한에 가까운 게 계속 마음에 걸린다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 개정판이 나오면 분량 여유를 좀 더 확보했는지부터 다시 볼 생각.</p>
     </div>
   </div>
 
@@ -160,6 +198,8 @@
         <li><span class="headline">크루 8인 실사 프로필 전원 반영</span></li>
         <li class="idle"><span class="headline idle">신작 단편 3편, 삽화 작업 없음</span><p class="headline-detail">텍스트 전용 기획이라 삽화 대상 아님</p></li>
       </ul>
+      <p class="staff-reflect">이번엔 손 갈 일이 없었다. 텍스트 전용 기획이라는 걸 알면서도 조금 아쉬웠다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 아직 삽화가 안 붙은 그림책 4편 중 순서를 정해 하나씩 시작할 계획.</p>
     </div>
   </div>
 
@@ -171,6 +211,8 @@
         <li><span class="headline">그림책 트렌드 리포트 1건 작성</span><p class="headline-detail">research/2026-08-28-그림책-트렌드.md</p></li>
         <li class="idle"><span class="headline idle">저작권 주간점검, 저장소 반영 실패</span><p class="headline-detail">클라우드 루틴은 실행됐으나 GitHub 쓰기 권한 문제로 커밋 불가</p></li>
       </ul>
+      <p class="staff-reflect">루틴은 제시간에 잘 돌았는데, 결과가 저장소에 안 올라간 걸 보고 나서는 허무했다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 권한 문제가 풀리면 밀린 저작권 점검부터 바로 처리할 예정.</p>
     </div>
   </div>
 
@@ -182,6 +224,8 @@
         <li><span class="headline">완성작 7편 홍보 카피 완료</span><p class="headline-detail">marketing/ 7건</p></li>
         <li class="idle"><span class="headline idle">신작 단편 3편, 카피 작업 없음</span></li>
       </ul>
+      <p class="staff-reflect">새 단편 3편에 아직 카피 한 줄도 못 썼다. 좀 밀렸다는 느낌이 든다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 세 편 홍보 카피 작성이 최우선 순위.</p>
     </div>
   </div>
 
@@ -193,6 +237,8 @@
         <li><span class="headline">개업 초기 정합성 점검 1건 완료</span><p class="headline-detail">admin/2026-08-28-점검.md</p></li>
         <li><span class="headline">창비 공모 체크리스트 신설</span><p class="headline-detail">필명 "다세파" 확정 기록 · admin/2026-08-30-창비공모-체크리스트.md</p></li>
       </ul>
+      <p class="staff-reflect">체크리스트를 만들면서, 마감(9/30)이 생각보다 안 멀다는 걸 새삼 느꼈다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 마케팅·삽화 진행 상황을 정기적으로 다시 점검할 예정.</p>
     </div>
   </div>
 
@@ -204,6 +250,8 @@
         <li><span class="headline">완성작 10편 전체 자문 완료</span><p class="headline-detail">advisory/ 10건 · 문학적·아동 심리 발달 관점</p></li>
         <li><span class="headline">공모전 출품작 2편 개정 자문 진행</span><p class="headline-detail">「우리만 아는 레시피」·「빈자리」 — 원고는 비공개, 제목만 공개</p></li>
       </ul>
+      <p class="staff-reflect">세 편 다 아이를 동정의 대상으로 그리지 않으려 한 흔적이 보여서 다행이었다.</p>
+      <p class="staff-next"><span class="next-label">다음 주엔</span> 공모전용 두 편의 최종본이 나오면 마지막 자문을 남길 예정.</p>
     </div>
   </div>
 
@@ -228,44 +276,82 @@
   var slidesEl = deckEl.querySelector('.slides');
   var revealInstance = null;
 
+  function makeSlide(innerHTML) {
+    var section = document.createElement('section');
+    section.innerHTML = innerHTML;
+    return section;
+  }
+
+  function chip(img, name, role) {
+    return '<div class="rv-chip"><img src="' + img + '" alt="' + name + '">' +
+      '<div class="rv-chip-text"><span class="rv-chip-name">' + name + '</span>' +
+      '<span class="rv-chip-role">' + role + '</span></div></div>';
+  }
+
   function buildSlides() {
     if (slidesEl.dataset.built) return;
     var frag = document.createDocumentFragment();
 
-    var titleSlide = document.createElement('section');
-    titleSlide.innerHTML =
+    frag.appendChild(makeSlide(
       '<p class="rv-eyebrow">' + (document.querySelector('.eyebrow').textContent || '') + '</p>' +
       '<h1 class="rv-title">' + document.querySelector('h1').textContent + '</h1>' +
-      '<p class="rv-sub">' + document.querySelector('.book-header .sub').textContent + '</p>';
-    frag.appendChild(titleSlide);
+      '<p class="rv-sub">' + document.querySelector('.book-header .sub').textContent + '</p>'
+    ));
 
     document.querySelectorAll('.staff-card').forEach(function (card) {
       var img = card.querySelector('img').getAttribute('src');
       var nameEl = card.querySelector('.staff-name');
       var role = nameEl.querySelector('.staff-role').textContent;
       var name = nameEl.childNodes[0].textContent.trim();
-      var items = Array.prototype.map.call(card.querySelectorAll('.headlines > li'), function (li) {
+      var chipHTML = chip(img, name, role);
+
+      // 1. 인물 소개 슬라이드 — 사진과 이름이 화면을 꽉 채움
+      frag.appendChild(makeSlide(
+        '<img class="rv-avatar-big" src="' + img + '" alt="' + name + '">' +
+        '<p class="rv-name-big">' + name + '</p>' +
+        '<p class="rv-role-big">' + role + '</p>'
+      ));
+
+      // 2. 헤드라인 하나당 슬라이드 하나 — 실적을 큰 글자로
+      Array.prototype.forEach.call(card.querySelectorAll('.headlines > li'), function (li) {
         var idle = li.classList.contains('idle') ? ' idle' : '';
         var headline = li.querySelector('.headline').textContent;
         var detail = li.querySelector('.headline-detail');
-        return '<li class="rv-h' + idle + '"><span>' + headline + '</span>' +
-          (detail ? '<small>' + detail.textContent + '</small>' : '') + '</li>';
-      }).join('');
-      var section = document.createElement('section');
-      section.innerHTML =
-        '<div class="rv-person">' +
-          '<img class="rv-avatar" src="' + img + '" alt="' + name + '">' +
-          '<div><p class="rv-name">' + name + '<span class="rv-role">' + role + '</span></p>' +
-          '<ul class="rv-headlines">' + items + '</ul></div>' +
-        '</div>';
-      frag.appendChild(section);
+        frag.appendChild(makeSlide(
+          chipHTML +
+          '<p class="rv-h' + idle + '">' + headline + '</p>' +
+          (detail ? '<p class="rv-h-detail">' + detail.textContent + '</p>' : '')
+        ));
+      });
+
+      // 3. 소감 슬라이드
+      var reflect = card.querySelector('.staff-reflect');
+      if (reflect) {
+        frag.appendChild(makeSlide(
+          chipHTML +
+          '<p class="rv-eyebrow">소감</p>' +
+          '<p class="rv-quote">' + reflect.textContent + '</p>'
+        ));
+      }
+
+      // 4. 다음 주 계획 슬라이드
+      var next = card.querySelector('.staff-next');
+      if (next) {
+        var nextText = next.textContent.replace(/^\s*다음 주엔\s*/, '');
+        frag.appendChild(makeSlide(
+          chipHTML +
+          '<p class="rv-eyebrow rv-next-tag">다음 주엔</p>' +
+          '<p class="rv-next-text">' + nextText + '</p>'
+        ));
+      }
     });
 
     var summaryEl = document.getElementById('weekSummary');
     if (summaryEl) {
-      var closing = document.createElement('section');
-      closing.innerHTML = '<p class="rv-eyebrow">SUMMARY</p><p class="rv-closing">' + summaryEl.textContent + '</p>';
-      frag.appendChild(closing);
+      frag.appendChild(makeSlide(
+        '<p class="rv-eyebrow">SUMMARY</p>' +
+        '<p class="rv-closing">' + summaryEl.textContent + '</p>'
+      ));
     }
 
     slidesEl.appendChild(frag);
