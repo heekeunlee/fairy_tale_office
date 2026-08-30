@@ -84,13 +84,16 @@
     --r-link-color: var(--brass);
   }
   /* Steve Jobs 키노트 스타일: 슬라이드마다 큰 화면을 꽉 채우는 단 하나의 메시지, 카드/여백 없는 풀블리드 배경 */
+  /* display는 여기서 지정하지 않는다 — reveal.js가 .present에만 표시하도록 제어하는 값을 !important로 덮어쓰면
+     모든 슬라이드가 동시에 렌더링되어 겹쳐 보인다(첫 장만 보이는 버그의 원인). flex는 .present에서만 켠다. */
   #revealDeck .slides section {
     width: 100%; height: 100%; box-sizing: border-box;
-    display: flex !important; flex-direction: column; align-items: center; justify-content: center;
+    flex-direction: column; align-items: center; justify-content: center;
     gap: 1.6rem; padding: 3.5rem 5rem; text-align: center; position: relative;
     background: radial-gradient(ellipse 75% 65% at 50% 28%, var(--wood-light), transparent 72%), var(--wood-deep);
     color: var(--paper-ink);
   }
+  #revealDeck .slides section.present { display: flex; }
   .rv-chip {
     position: absolute; top: 2.2rem; left: 3rem; display: flex; align-items: center; gap: .7rem;
   }

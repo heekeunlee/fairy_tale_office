@@ -159,7 +159,22 @@
     display: flex; flex-direction: column;
     box-shadow: 0 1.2rem 2rem -1rem rgba(0,0,0,.55), inset 0 0 0 1px rgba(36,26,16,.06);
     color: var(--ink);
+    cursor: pointer; transition: transform .18s ease, box-shadow .18s ease;
   }
+  .crew-card:hover, .crew-card:focus-visible {
+    transform: translateY(-.3rem);
+    box-shadow: 0 1.8rem 2.6rem -1rem rgba(0,0,0,.65), inset 0 0 0 1px rgba(36,26,16,.06);
+    outline: none;
+  }
+  .crew-card:focus-visible { outline: 2px solid var(--brass-bright); outline-offset: 2px; }
+  .crew-card .portrait { position: relative; }
+  .crew-card .portrait::after {
+    content: "인사기록 보기 →"; position: absolute; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(0deg, rgba(36,26,16,.82), transparent);
+    color: var(--brass-bright); font-family: "IBM Plex Mono", monospace; font-size: .68rem;
+    text-align: center; padding: 1.8rem 0 .5rem; opacity: 0; transition: opacity .18s ease; pointer-events: none;
+  }
+  .crew-card:hover .portrait::after, .crew-card:focus-visible .portrait::after { opacity: 1; }
   .crew-card .portrait { width: 100%; aspect-ratio: 480 / 418; overflow: hidden; background: var(--wood); }
   .crew-card .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .crew-card .crew-body {
@@ -180,6 +195,42 @@
     box-shadow: 0 0 6px rgba(62,142,91,.7); display: inline-block; flex: none;
   }
   .status-word { color: #2F6E48; font-weight: 500; }
+
+  .personnel-modal {
+    position: fixed; inset: 0; z-index: 998; display: flex; align-items: center; justify-content: center;
+    background: rgba(15,11,7,.72); backdrop-filter: blur(2px); padding: 1.2rem;
+  }
+  .personnel-modal[hidden] { display: none; }
+  .personnel-card {
+    position: relative; width: 100%; max-width: 34rem; max-height: 88vh; overflow-y: auto;
+    background: linear-gradient(180deg, var(--parchment) 0%, var(--parchment-soft) 100%);
+    color: var(--ink); border-radius: 1.2rem; padding: 2rem 2rem 1.6rem;
+    box-shadow: 0 2.5rem 5rem -1.5rem rgba(0,0,0,.8);
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  .personnel-close {
+    position: absolute; top: .9rem; right: .9rem; width: 2.2rem; height: 2.2rem; border-radius: 50%;
+    border: 1px solid rgba(36,26,16,.15); background: rgba(36,26,16,.06); color: var(--ink);
+    font-size: 1rem; cursor: pointer; line-height: 1;
+  }
+  .personnel-close:hover { background: rgba(36,26,16,.14); }
+  .personnel-head { display: flex; gap: 1.1rem; align-items: center; }
+  .personnel-photo { width: 5.2rem; height: 5.2rem; border-radius: 50%; object-fit: cover; border: 3px solid var(--brass); flex: none; }
+  .personnel-headtext { display: flex; flex-direction: column; gap: .15rem; }
+  .personnel-name { font-family: "Gowun Batang", serif; font-weight: 700; font-size: 1.3rem; }
+  .personnel-en { font-family: "IBM Plex Mono", monospace; font-size: .72rem; color: #6B5A3F; }
+  .personnel-role { font-family: "IBM Plex Mono", monospace; font-size: .76rem; color: var(--signal); margin-top: .1rem; }
+  .personnel-eyebrow { font-family: "IBM Plex Mono", monospace; font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: var(--brass); text-align: center; margin: 0 0 -.6rem; }
+  .personnel-field { display: flex; flex-direction: column; gap: .4rem; }
+  .personnel-field .label {
+    font-family: "IBM Plex Mono", monospace; font-size: .7rem; letter-spacing: .06em; color: var(--brass);
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .personnel-field .label::after { content: ""; flex: 1; height: 1px; background: rgba(36,26,16,.14); }
+  .personnel-field ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .3rem; }
+  .personnel-field li, .personnel-field p { margin: 0; font-size: .88rem; line-height: 1.6; color: #3A2C1C; }
+  .personnel-field li::before { content: "· "; color: #8A7A5C; }
+  .personnel-foot { text-align: center; font-size: .72rem; color: #8A7A5C; font-style: italic; margin: .2rem 0 0; }
 
   .process {
     display: flex; align-items: center; justify-content: center;
@@ -343,7 +394,7 @@
       <h2>지금 문을 연 방</h2>
     </div>
     <div class="cabinet">
-      <article class="crew-card">
+      <article class="crew-card" data-crew="planner" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/planner.jpg" alt="기획 담당 에이전트 이소진의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">이소진<span class="en">Isabella Lee</span></p>
@@ -355,7 +406,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="writer" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/writer.jpg" alt="집필 담당 에이전트 최민우의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">최민우<span class="en">Noah Choi</span></p>
@@ -367,7 +418,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="critic" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/critic.jpg" alt="심사 담당 에이전트 박미란의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">박미란<span class="en">Dr. Miran Park</span></p>
@@ -379,7 +430,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="designer" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/designer.jpg" alt="디자인 담당 에이전트 정다은의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">정다은<span class="en">Dawn Jung</span></p>
@@ -391,7 +442,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="researcher" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/researcher.jpg" alt="리서치 담당 에이전트 남도윤의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">남도윤<span class="en">Dylan Nam</span></p>
@@ -403,7 +454,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="marketer" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/marketer.jpg" alt="마케팅 담당 에이전트 백하늘의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">백하늘<span class="en">Skye Baek</span></p>
@@ -415,7 +466,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="admin" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/admin.jpg" alt="총무 담당 에이전트 조단비의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">조단비<span class="en">Danbi Cho</span></p>
@@ -427,7 +478,7 @@
         </div>
       </article>
 
-      <article class="crew-card">
+      <article class="crew-card" data-crew="advisor" role="button" tabindex="0" aria-haspopup="dialog">
         <div class="portrait"><img src="images/advisor.jpg" alt="고문 에이전트 강수연의 초상" loading="lazy"></div>
         <div class="crew-body">
           <p class="crew-persona">강수연<span class="en">Sue Kang</span></p>
@@ -644,6 +695,39 @@
   </footer>
 
 </div>
+
+<div class="personnel-modal" id="personnelModal" hidden role="dialog" aria-modal="true" aria-labelledby="personnelName">
+  <div class="personnel-card">
+    <button type="button" class="personnel-close" id="personnelClose" aria-label="닫기">✕</button>
+    <p class="personnel-eyebrow">인사기록카드</p>
+    <div class="personnel-head">
+      <img class="personnel-photo" id="personnelPhoto" src="" alt="">
+      <div class="personnel-headtext">
+        <span class="personnel-name" id="personnelName"></span>
+        <span class="personnel-en" id="personnelEn"></span>
+        <span class="personnel-role" id="personnelRole"></span>
+      </div>
+    </div>
+    <div class="personnel-field">
+      <span class="label">학력</span>
+      <ul id="personnelEdu"></ul>
+    </div>
+    <div class="personnel-field">
+      <span class="label">경력</span>
+      <ul id="personnelCareer"></ul>
+    </div>
+    <div class="personnel-field">
+      <span class="label">취미</span>
+      <p id="personnelHobby"></p>
+    </div>
+    <div class="personnel-field">
+      <span class="label">특기</span>
+      <p id="personnelSpecialty"></p>
+    </div>
+    <p class="personnel-foot">이 기록은 캐릭터 설정입니다 — 실제로는 전부 같은 Claude 모델이 맡은 역할입니다.</p>
+  </div>
+</div>
+
 <script>
 (function () {
   var shelf = document.getElementById('shelf');
@@ -670,6 +754,117 @@
   var saved = 'list';
   try { saved = localStorage.getItem(KEY) || 'list'; } catch (e) {}
   setView(saved);
+})();
+
+(function () {
+  var PERSONNEL = {
+    planner: {
+      name: '이소진', en: 'Isabella Lee', role: '기획 담당 · 기획실', photo: 'images/planner.jpg',
+      edu: ['국어국문학과 졸업', '대학원 아동청소년문학 전공 수료'],
+      career: ['그림책 출판사 편집자 6년', '지역 도서관 독서모임 진행자 3년'],
+      hobby: '헌책방 순례, 오래된 그림책 수집',
+      specialty: '표지만 보고 대상 연령 맞히기'
+    },
+    writer: {
+      name: '최민우', en: 'Noah Choi', role: '집필 담당 · 집필실', photo: 'images/writer.jpg',
+      edu: ['문예창작학과 졸업'],
+      career: ['동화 공모전 신인상 수상', '어린이 잡지 단편 연재 2년'],
+      hobby: '밤 산책하며 대사 중얼거리기',
+      specialty: '초고를 소리 내어 읽으며 리듬 다듬기'
+    },
+    critic: {
+      name: '박미란', en: 'Dr. Miran Park', role: '심사 담당 · 심사실', photo: 'images/critic.jpg',
+      edu: ['아동문학 박사'],
+      career: ['아동청소년문학상 심사위원', '대학 아동문학 강의 8년'],
+      hobby: '지난 심사평 다시 읽어보기',
+      specialty: '첫 문단만 보고 결말의 진부함 예측하기'
+    },
+    designer: {
+      name: '정다은', en: 'Dawn Jung', role: '디자인 담당 · 디자인실', photo: 'images/designer.jpg',
+      edu: ['시각디자인과 졸업'],
+      career: ['동화책 삽화 작업 8권', '그림책 원화 전시 참여 2회'],
+      hobby: '색연필 드로잉, 미술관 나들이',
+      specialty: '여백만으로 감정 표현하기'
+    },
+    researcher: {
+      name: '남도윤', en: 'Dylan Nam', role: '리서치 담당 · 자료실', photo: 'images/researcher.jpg',
+      edu: ['미디어커뮤니케이션 전공'],
+      career: ['출판 트렌드 뉴스레터 운영', '독립서점 MD 경험'],
+      hobby: '신간 코너 훑어보기',
+      specialty: '비슷한 소재의 기존작 빠르게 찾아내기'
+    },
+    marketer: {
+      name: '백하늘', en: 'Skye Baek', role: '마케팅 담당 · 홍보실', photo: 'images/marketer.jpg',
+      edu: ['광고홍보학과 졸업'],
+      career: ['어린이 콘텐츠 브랜드 마케팅 4년', 'SNS 채널 기획·운영'],
+      hobby: '좋은 카피 모아두기',
+      specialty: '교훈 대사 없이 한 줄로 눈물샘 자극하기'
+    },
+    admin: {
+      name: '조단비', en: 'Danbi Cho', role: '총무 담당 · 사무실', photo: 'images/admin.jpg',
+      edu: ['경영학과 졸업'],
+      career: ['출판사 제작 진행 관리(PM) 5년'],
+      hobby: '체크리스트 만들기',
+      specialty: '숫자 안 맞는 곳 바로 찾아내기'
+    },
+    advisor: {
+      name: '강수연', en: 'Sue Kang', role: '고문 (아동문학가) · 자문실', photo: 'images/advisor.jpg',
+      edu: ['아동문학 전공', '아동심리상담사 자격 이수'],
+      career: ['아동문학가 등단', '아동심리상담소 자문위원'],
+      hobby: '아이들 인터뷰하며 진짜 생각 듣기',
+      specialty: '"착한 결말"과 "진짜인 결말" 구분하기'
+    }
+  };
+
+  var modal = document.getElementById('personnelModal');
+  var closeBtn = document.getElementById('personnelClose');
+  var lastFocused = null;
+
+  function fillList(el, items) {
+    el.innerHTML = '';
+    items.forEach(function (t) {
+      var li = document.createElement('li');
+      li.textContent = t;
+      el.appendChild(li);
+    });
+  }
+
+  function openPersonnel(key) {
+    var p = PERSONNEL[key];
+    if (!p) return;
+    document.getElementById('personnelPhoto').src = p.photo;
+    document.getElementById('personnelPhoto').alt = p.name + '의 초상';
+    document.getElementById('personnelName').textContent = p.name;
+    document.getElementById('personnelEn').textContent = p.en;
+    document.getElementById('personnelRole').textContent = p.role;
+    fillList(document.getElementById('personnelEdu'), p.edu);
+    fillList(document.getElementById('personnelCareer'), p.career);
+    document.getElementById('personnelHobby').textContent = p.hobby;
+    document.getElementById('personnelSpecialty').textContent = p.specialty;
+    lastFocused = document.activeElement;
+    modal.hidden = false;
+    closeBtn.focus();
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePersonnel() {
+    modal.hidden = true;
+    document.body.style.overflow = '';
+    if (lastFocused) lastFocused.focus();
+  }
+
+  document.querySelectorAll('.crew-card[data-crew]').forEach(function (card) {
+    card.addEventListener('click', function () { openPersonnel(card.getAttribute('data-crew')); });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPersonnel(card.getAttribute('data-crew')); }
+    });
+  });
+
+  closeBtn.addEventListener('click', closePersonnel);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closePersonnel(); });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && !modal.hidden) closePersonnel();
+  });
 })();
 </script>
 </body>
